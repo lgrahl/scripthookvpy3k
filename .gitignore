@@ -1,5 +1,5 @@
 # Ignore SDK
-sdk/
+sdk/*
 
 # User-specific files
 *.suo
