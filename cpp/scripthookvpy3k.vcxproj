@@ -16,21 +16,26 @@
     <ClInclude Include="..\sdk\inc\natives.h" />
     <ClInclude Include="..\sdk\inc\types.h" />
     <ClInclude Include="src\keyboard.h" />
+    <ClInclude Include="src\natives_wrap.h" />
     <ClInclude Include="src\wrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\keyboard.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\natives_wrap.cxx" />
     <ClCompile Include="src\wrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\sdk\lib\ScriptHookV.lib" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\natives.i" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8D82F34A-1D64-465B-84B1-37F89AD3D20B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>ScriptHookVPy3k</RootNamespace>
-    <ProjectName>ScriptHookVPy3k</ProjectName>
+    <RootNamespace>scripthookvpy3k</RootNamespace>
+    <ProjectName>scripthookvpy3k</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">

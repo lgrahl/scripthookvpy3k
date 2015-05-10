@@ -15,6 +15,7 @@
     <ClInclude Include="..\sdk\inc\types.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="src\natives_wrap.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -25,10 +26,14 @@
     <ClCompile Include="src\keyboard.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\wrapper.cpp" />
+    <ClCompile Include="src\natives_wrap.cxx" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\sdk\lib\ScriptHookV.lib">
       <Filter>include</Filter>
     </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\natives.i" />
   </ItemGroup>
 </Project>

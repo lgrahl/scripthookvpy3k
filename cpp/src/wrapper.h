@@ -6,10 +6,11 @@
 
 #include "..\..\sdk\inc\main.h"
 
+#include "keyboard.h"
+#include "natives_wrap.h"
+
 #include <Python.h>
 
-static PyObject* EmbStuff(PyObject* self, PyObject* args);
-static PyObject* Py3kEmbInit();
 void Py3kInitialize();
 void Py3kFinalize();
 void Py3kWrapper();

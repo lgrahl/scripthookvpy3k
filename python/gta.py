@@ -77,14 +77,17 @@ def _init(count):
     logger.debug('Instance #{}', count)
     logger.debug('Path: {}', sys.path)
     
-    # Need to clean up?
-    if _started_id != _stopped_id:
-        logger.debug('Cleaning up previous instance #{}', _stopped_id)
-        _stop_scripts(_started_id)
+    try:
+        # Need to clean up?
+        if _started_id != _stopped_id:
+            logger.debug('Cleaning up previous instance #{}', _stopped_id)
+            _stop_scripts(_started_id)
 
-    # Start scripts
-    _start_scripts(count)
-    _started_count = count
+        # Start scripts
+        _start_scripts(count)
+        _started_count = count
+    except Exception as exc:
+        logger.exception(exc)
 
 def _setup_logging():
     # Setup formatter and handler
@@ -93,7 +96,7 @@ def _setup_logging():
         datefmt='%Y-%m-%d %H-%M:%S',
         style='{'
     )
-    handler = logging.FileHandler('Py3k.log')
+    handler = logging.FileHandler('scripthookvpy3k.log')
     handler.setFormatter(formatter)
     
     # Setup gta logger
@@ -107,7 +110,12 @@ def _start_scripts(id_):
     logger.debug('Starting scripts')
     _started_id = id_
     
-    logger.debug(gta_native.stuff())
+    player = gta_native.PLAYER_ID()
+    player_ped = gta_native.PLAYER_PED_ID()
+    logger.debug('PLAYER: {}', player)
+    wanted_level = gta_native.GET_PLAYER_WANTED_LEVEL(player) + 1
+    gta_native.SET_PLAYER_WANTED_LEVEL(player, wanted_level, False)
+    gta_native.SET_PLAYER_WANTED_LEVEL_NOW(player, False)
 
 def _stop_scripts(id_):
     global _stopped_id
