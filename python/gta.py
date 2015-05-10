@@ -5,10 +5,6 @@ import atexit
 
 import gta_native
 
-# Global hook instance
-_started_id = -1
-_stopped_id = -1
-
 class Message:
     """
     A wrapper class that applies the new formatting style on a message
@@ -65,29 +61,16 @@ class CurlyBracketFormattingAdapter(logging.LoggerAdapter):
             # noinspection PyProtectedMember
             self.logger._log(level, Message(msg, args), (), **kwargs)
 
-def _init(count):
-    global _started_id
-    global _stopped_id
-    
+def _init():
     # Setup logging
     _setup_logging()
 
     # Print some debug information
     logger = get_logger()
-    logger.debug('Instance #{}', count)
     logger.debug('Path: {}', sys.path)
     
-    try:
-        # Need to clean up?
-        if _started_id != _stopped_id:
-            logger.debug('Cleaning up previous instance #{}', _stopped_id)
-            _stop_scripts(_started_id)
-
-        # Start scripts
-        _start_scripts(count)
-        _started_count = count
-    except Exception as exc:
-        logger.exception(exc)
+    # Start scripts
+    _start_scripts()
 
 def _setup_logging():
     # Setup formatter and handler
@@ -104,29 +87,30 @@ def _setup_logging():
     logger.setLevel(logging.DEBUG)
     logger.addHandler(handler)
     
-def _start_scripts(id_):
-    global _started_id
+def _start_scripts():
     logger = get_logger()
     logger.debug('Starting scripts')
-    _started_id = id_
     
-    player = gta_native.PLAYER_ID()
-    player_ped = gta_native.PLAYER_PED_ID()
-    logger.debug('PLAYER: {}', player)
-    wanted_level = gta_native.GET_PLAYER_WANTED_LEVEL(player) + 1
-    gta_native.SET_PLAYER_WANTED_LEVEL(player, wanted_level, False)
-    gta_native.SET_PLAYER_WANTED_LEVEL_NOW(player, False)
+    # TODO: Start each script
+    try:
+        player = gta_native.PLAYER_ID()
+        player_ped = gta_native.PLAYER_PED_ID()
+        logger.debug('PLAYER: {}', player)
+        wanted_level = gta_native.GET_PLAYER_WANTED_LEVEL(player) + 1
+        gta_native.SET_PLAYER_WANTED_LEVEL(player, wanted_level, False)
+        gta_native.SET_PLAYER_WANTED_LEVEL_NOW(player, False)
+    except Exception as exc:
+        logger.exception(exc)
 
-def _stop_scripts(id_):
-    global _stopped_id
+
+def _stop_scripts():
     logger = get_logger()
     logger.debug('Stopping scripts')
-    _stopped_id = id_
 
 @atexit.register
 def _exit():
     logger = get_logger()
-    _stop_scripts(_stopped_id)
+    _stop_scripts()
     logger.debug('Exiting')
 
 def get_logger(name='gta'):
