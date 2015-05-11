@@ -1,9 +1,5 @@
 import logging
-import os
-import sys
-import atexit
 
-import gta_native
 
 class Message:
     """
@@ -37,7 +33,8 @@ class Message:
             return self._fmt.format(*self._args)
         else:
             return self._fmt.__str__()
-            
+
+
 class CurlyBracketFormattingAdapter(logging.LoggerAdapter):
     """
     Logging style adapter that is able to use the new curly bracket
@@ -61,18 +58,8 @@ class CurlyBracketFormattingAdapter(logging.LoggerAdapter):
             # noinspection PyProtectedMember
             self.logger._log(level, Message(msg, args), (), **kwargs)
 
-def _init():
-    # Setup logging
-    _setup_logging()
 
-    # Print some debug information
-    logger = get_logger()
-    logger.debug('Path: {}', sys.path)
-    
-    # Start scripts
-    _start_scripts()
-
-def _setup_logging():
+def setup_logging():
     # Setup formatter and handler
     formatter = logging.Formatter(
         fmt='{asctime} {name:<22} {levelname:<18} {message}',
@@ -81,37 +68,12 @@ def _setup_logging():
     )
     handler = logging.FileHandler('scripthookvpy3k.log')
     handler.setFormatter(formatter)
-    
+
     # Setup gta logger
     logger = logging.getLogger('gta')
     logger.setLevel(logging.DEBUG)
     logger.addHandler(handler)
-    
-def _start_scripts():
-    logger = get_logger()
-    logger.debug('Starting scripts')
-    
-    # TODO: Start each script
-    try:
-        player = gta_native.PLAYER_ID()
-        player_ped = gta_native.PLAYER_PED_ID()
-        logger.debug('PLAYER: {}', player)
-        wanted_level = gta_native.GET_PLAYER_WANTED_LEVEL(player) + 1
-        gta_native.SET_PLAYER_WANTED_LEVEL(player, wanted_level, False)
-        gta_native.SET_PLAYER_WANTED_LEVEL_NOW(player, False)
-    except Exception as exc:
-        logger.exception(exc)
 
-
-def _stop_scripts():
-    logger = get_logger()
-    logger.debug('Stopping scripts')
-
-@atexit.register
-def _exit():
-    logger = get_logger()
-    _stop_scripts()
-    logger.debug('Exiting')
 
 def get_logger(name='gta'):
     return CurlyBracketFormattingAdapter(logging.getLogger(name))
