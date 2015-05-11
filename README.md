@@ -1,5 +1,5 @@
 # Script Hook V Py3k
-This is an ASI plugin for Grand Theft Auto V that wraps around the C++ ScriptHook by Alexander Blade. It allows running scripts written in Python 3 in game by using the included [GTA module](/python/gta.py).
+This is an ASI plugin for Grand Theft Auto V that wraps around the C++ ScriptHook by Alexander Blade. It allows running scripts written in Python 3 in game by using the included [GTA module](/python/gta).
 
 ## Download
 Coming soon.
@@ -10,7 +10,7 @@ Coming soon.
 3. Extract the contents of the archive into your GTA V folder.
 
 ## Scripting
-See [/example](/example) to get started.
+See [wanted.py](/python/scripts/wanted.py) to get started.
 
 Copy your ``.py`` script file into ``scripts`` in your GTA V folder.
 
