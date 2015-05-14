@@ -17,8 +17,10 @@ Copy your ``.py`` script file into ``scripts`` in your GTA V folder.
 Press F12 in game to reload all scripts.
 
 ## Building
-If you want to build the ASI plugin yourself, you'll need Visual Studio 2013 and the [Script Hook V SDK](http://www.dev-c.com/gtav/scripthookv/) which has to be extracted into [/sdk](/sdk) after downloading.
-
-Install **Python 3 for AMD64/EM64T/x64**. Using the x86 version will not work!
+If you want to build the ASI plugin yourself, you'll need:
+* Visual Studio 2013
+* The [Script Hook V SDK](http://www.dev-c.com/gtav/scripthookv/) which has to be extracted into [/sdk](/sdk) after downloading
+* [SWIG](http://sourceforge.net/projects/swig/files/swigwin/) Version >= 3.0.5 which has to be extracted into [/swig](/swig) after downloading
+* **Python 3 for AMD64/EM64T/x64**. Using the x86 version will not work!
 
 Open the project file and build the solution in *Release* configuration.
