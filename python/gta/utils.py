@@ -37,7 +37,7 @@ class Message:
 
 class CurlyBracketFormattingAdapter(logging.LoggerAdapter):
     """
-    Logging style adapter that is able to use the new curly bracket
+    A logging style adapter that is able to use the new curly bracket
     formatting style.
 
     Arguments:
@@ -60,6 +60,12 @@ class CurlyBracketFormattingAdapter(logging.LoggerAdapter):
 
 
 def setup_logging(console):
+    """
+    Setup logging formatter, handlers, etc. for the `gta` logger.
+
+    Arguments:
+        - `console`: Use console logging instead of file logging.
+    """
     # Setup formatter and handler
     formatter = logging.Formatter(
         fmt='{asctime} {name:<22} {levelname:<18} {message}',
@@ -82,4 +88,13 @@ def setup_logging(console):
 
 
 def get_logger(name='gta'):
+    """
+    Wrap the curly bracket formatting adapter around a logger. Should
+    always be used instead of ``logging.getLogger``.
+
+    Arguments:
+        - `name`: The name of the logger.
+
+    Return the wrapped :class:`logging.logger` instance.
+    """
     return CurlyBracketFormattingAdapter(logging.getLogger(name))
