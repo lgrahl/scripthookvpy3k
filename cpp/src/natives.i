@@ -1,4 +1,5 @@
 %module gta_native
+
 %{
 #include "natives_wrap.h"
 %}

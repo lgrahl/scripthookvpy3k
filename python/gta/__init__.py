@@ -62,6 +62,7 @@ def _start_scripts():
         logger.debug('Starting script: {}', name)
         task = loop.create_task(script())
         tasks.append(task)
+    logger.debug('Scripts started')
     if len(tasks) > 0:
         loop.run_until_complete(asyncio.wait(tasks))
     loop.close()
@@ -70,7 +71,7 @@ def _start_scripts():
 def _stop_scripts():
     logger = utils.get_logger()
     logger.debug('Stopping scripts')
-
+    # TODO: Close event loop (cancel tasks)
 
 @atexit.register
 def _exit():
