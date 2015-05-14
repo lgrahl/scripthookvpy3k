@@ -59,15 +59,21 @@ class CurlyBracketFormattingAdapter(logging.LoggerAdapter):
             self.logger._log(level, Message(msg, args), (), **kwargs)
 
 
-def setup_logging():
+def setup_logging(console):
     # Setup formatter and handler
     formatter = logging.Formatter(
         fmt='{asctime} {name:<22} {levelname:<18} {message}',
         datefmt='%Y-%m-%d %H-%M:%S',
         style='{'
     )
-    handler = logging.FileHandler('scripthookvpy3k.log')
-    handler.setFormatter(formatter)
+
+    # Output in file or using the console
+    if console:
+        handler = logging.StreamHandler()
+        handler.setFormatter(formatter)
+    else:
+        handler = logging.FileHandler('scripthookvpy3k.log')
+        handler.setFormatter(formatter)
 
     # Setup gta logger
     logger = logging.getLogger('gta')

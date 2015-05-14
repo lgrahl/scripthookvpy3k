@@ -18,9 +18,9 @@ class ImportScriptException(ScriptException):
         return 'Could not import script: {}'.format(*self.args)
 
 
-def _init():
+def _init(console=False):
     # Setup logging
-    utils.setup_logging()
+    utils.setup_logging(console)
 
     # Print some debug information
     logger = utils.get_logger()
