@@ -134,11 +134,13 @@ def install_dependency(dependency):
         message = 'Checking dependency "{}" for path "{}"'
         logger.debug(message, dependency, os.path.relpath(path))
         command = pip.commands.InstallCommand(isolated=True)
-        command.main([
+        # Note: We can't run 'main' because it overrides our logging settings
+        options, args = command.parse_args([
             '--disable-pip-version-check',
             '--upgrade',
             '--target', path,
             dependency
         ])
+        command.run(options, args)
     except pip.exceptions.PipError as exc:
         raise InstallDependencyError(dependency) from exc

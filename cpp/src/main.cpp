@@ -9,6 +9,7 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
 		keyboardHandlerRegister(OnKeyboardMessage);
 		break;
 	case DLL_PROCESS_DETACH:
+		Py3kFinalize();
 		scriptUnregister(Py3kWrapper);
 		keyboardHandlerUnregister(OnKeyboardMessage);
 		break;
