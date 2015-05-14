@@ -10,15 +10,33 @@ __all__ = ('ScriptException', 'ImportScriptException', 'get_logger')
 
 
 class ScriptException(Exception):
+    """
+    A general script exception all other exceptions are derived from.
+    """
     pass
 
 
 class ImportScriptException(ScriptException):
+    """
+    A script could not be imported.
+
+    Arguments:
+        - `name`: The name of the script.
+    """
+    def __init__(self, name):
+        self.name = name
+
     def __str__(self):
-        return 'Could not import script: {}'.format(*self.args)
+        return 'Could not import script: {}'.format(self.name)
 
 
 def _init(console=False):
+    """
+    Initialise requirements and startup scripts.
+
+    Arguments:
+        - `console`: Use console logging instead of file logging.
+    """
     # Setup logging
     utils.setup_logging(console)
 
@@ -31,6 +49,12 @@ def _init(console=False):
 
 
 def _import_scripts():
+    """
+    Import all scripts from the `scripts` package.
+
+    Yield a tuple containing the script name and a callback
+    to the main function of the script.
+    """
     logger = utils.get_logger()
 
     # Import parent package
@@ -52,6 +76,9 @@ def _import_scripts():
 
 
 def _start_scripts():
+    """
+    Run the main function of all scripts from the `scripts` package.
+    """
     logger = utils.get_logger()
     logger.debug('Starting scripts')
 
@@ -69,12 +96,18 @@ def _start_scripts():
 
 
 def _stop_scripts():
+    """
+    Cancel scripts that are still running.
+    """
     logger = utils.get_logger()
     logger.debug('Stopping scripts')
-    # TODO: Close event loop (cancel tasks)
+    # TODO: Cancel tasks
 
 @atexit.register
 def _exit():
+    """
+    Stop running scripts and clean up before exiting.
+    """
     logger = utils.get_logger()
     _stop_scripts()
     logger.debug('Exiting')
