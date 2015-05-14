@@ -1,4 +1,12 @@
 import logging
+import os
+import pip.commands
+import pip.exceptions
+
+from gta.exceptions import *
+
+__all__ = ('Message', 'CurlyBracketFormattingAdapter', 'setup_logging', 'get_logger',
+           'install_dependency')
 
 
 class Message:
@@ -61,7 +69,8 @@ class CurlyBracketFormattingAdapter(logging.LoggerAdapter):
 
 def setup_logging(console):
     """
-    Setup logging formatter, handlers, etc. for the `gta` logger.
+    Setup logging formatter, handlers, etc. for the `gta` and `pip`
+    logger.
 
     Arguments:
         - `console`: Use console logging instead of file logging.
@@ -86,6 +95,11 @@ def setup_logging(console):
     logger.setLevel(logging.DEBUG)
     logger.addHandler(handler)
 
+    # Setup pip logger
+    logger = logging.getLogger('pip')
+    logger.setLevel(logging.WARNING)
+    logger.addHandler(handler)
+
 
 def get_logger(name='gta'):
     """
@@ -98,3 +112,33 @@ def get_logger(name='gta'):
     Return the wrapped :class:`logging.logger` instance.
     """
     return CurlyBracketFormattingAdapter(logging.getLogger(name))
+
+
+def install_dependency(dependency):
+    """
+    Install a dependency using :class:`pip`.
+
+    Arguments:
+        - `dependency`: A dependency as a `requirement specifier
+          <https://pip.pypa.io/en/latest/reference/pip_install.html#requirement-specifiers>`_.
+        - `use_script_path`: Install the dependency into the specified
+          directory instead of the scripts main directory.
+    """
+    logger = get_logger()
+
+    # Get path
+    path = os.path.abspath(os.getcwd())
+
+    try:
+        # Install dependency
+        message = 'Checking dependency "{}" for path "{}"'
+        logger.debug(message, dependency, os.path.relpath(path))
+        command = pip.commands.InstallCommand(isolated=True)
+        command.main([
+            '--disable-pip-version-check',
+            '--upgrade',
+            '--target', path,
+            dependency
+        ])
+    except pip.exceptions.PipError as exc:
+        raise InstallDependencyError(dependency) from exc
