@@ -1,39 +1,49 @@
 #include "wrapper.h"
 
+PyThreadState* pThreadState;
 PyObject* pExit = nullptr;
-HANDLE lock = nullptr;
-HANDLE py3k;
 std::ofstream logger("scripthookvpy3k.wrapper.log", std::ios_base::app | std::ios_base::out);
 
-void log_(char* type, char* message) {
+char* time_now() {
+	char* buffer = new char[80];
 	time_t now = time(0);
-	struct tm tstruct;
-	char buffer[80];
-	tstruct = *localtime(&now);
-	strftime(buffer, sizeof(buffer), "%Y-%m-%d %X ", &tstruct);
-	logger << buffer << type << ": " << message << std::endl;
-	logger.flush();
+	struct tm time_info;
+	localtime_s(&time_info, &now);
+	strftime(buffer, 80, "%Y-%m-%d %X ", &time_info);
+	return buffer;
 }
 
-void log_debug(char* message) {
+void log_(char* type, std::string message) {
+	char* now = time_now();
+	logger << now << type << ": " << message.c_str() << std::endl;
+	logger.flush();
+	delete now;
+}
+
+void log_(char* type, wchar_t* message) {
+	char* now = time_now();
+	logger << now << type << ": " << message << std::endl;
+	logger.flush();
+	delete now;
+}
+
+void log_debug(std::string message) {
 	log_("Debug", message);
 }
 
-void log_error(char* message) {
+void log_debug(wchar_t* message) {
+	log_("Debug", message);
+}
+
+void log_error(std::string message) {
 	log_("Error", message);
 }
 
-DWORD WINAPI Py3kThreadInitialize(LPVOID _) {
-	// Check if there is a lock
-	if (lock == nullptr) {
-		log_error("Py3kThreadInitialize lock is null");
-		return 1;
-	}
+void log_error(wchar_t* message) {
+	log_("Error", message);
+}
 
-	// Acquire lock
-	log_debug("Py3kFinalize acquire");
-	WaitForSingleObject(lock, INFINITE);
-
+void Py3kInitialize() {
 	if (!Py_IsInitialized()) {
 		PyObject* pName;
 		PyObject* pModule;
@@ -48,6 +58,17 @@ DWORD WINAPI Py3kThreadInitialize(LPVOID _) {
 		log_debug("Initialising");
 		Py_Initialize();
 		log_debug("Initialised");
+
+		// Initialise and acquire GIL
+		log_debug("Initialising and acquiring GIL");
+		PyEval_InitThreads();
+
+		// Get version (borrowed)
+		log_debug(std::string(Py_GetVersion()));
+
+		// Get path (borrowed)
+		wchar_t* path = Py_GetPath();
+		log_debug(path);
 
 		// Reference module name
 		pName = PyUnicode_FromString("gta");
@@ -65,10 +86,6 @@ DWORD WINAPI Py3kThreadInitialize(LPVOID _) {
 		Py_DECREF(pName);
 		Py_DECREF(pModule);
 
-		// Release lock
-		log_debug("Py3kFinalize release");
-		ReleaseMutex(lock);
-
 		// Call init function
 		if (PyCallable_Check(pInit)) {
 			log_debug("Calling gta._init()");
@@ -77,59 +94,40 @@ DWORD WINAPI Py3kThreadInitialize(LPVOID _) {
 		} else {
 			log_error("Init function is not callable");
 		}
+
+		// Release GIL
+		log_debug("Releasing GIL");
+		pThreadState = PyEval_SaveThread();
 	} else {
 		log_debug("Already initialised");
-		// Release lock
-		log_debug("Py3kFinalize release");
-		ReleaseMutex(lock);
 	}
-
-	return 0;
-}
-
-void Py3kInitialize() {
-	// Create thread for Python and initialise
-	log_debug("Creating thread");
-	py3k = CreateThread(nullptr, 0, Py3kThreadInitialize, nullptr, 0, nullptr);
 }
 
 void Py3kFinalize() {
-	// Check if there is a lock
-	if (lock == nullptr) {
-		log_error("Py3kFinalize lock is null");
-		return;
-	}
-
-	// Acquire lock
-	log_debug("Py3kFinalize acquire");
-	WaitForSingleObject(lock, INFINITE);
-
 	if (Py_IsInitialized()) {
 		log_debug("Finalising");
+
+		// Acquire GIL
+		log_debug("Acquiring GIL");
+		PyEval_RestoreThread(pThreadState);
+
 		// Call exit function
-		if (pExit != nullptr) {
-			if (PyCallable_Check(pExit)) {
-				log_debug("Calling gta._exit()");
-				PyObject_CallObject(pExit, NULL);
-				log_debug("Returned from gta._exit()");
-			} else {
-				log_error("Exit function is not callable");
-			}
+		if (PyCallable_Check(pExit)) {
+			log_debug("Calling gta._exit()");
+			PyObject_CallObject(pExit, NULL);
+			log_debug("Returned from gta._exit()");
+		} else {
+			log_error("Exit function is not callable");
 		}
 
 		// Reset vars
 		pExit = nullptr;
+		pThreadState = nullptr;
 
 		// Finalise interpreter
 		Py_Finalize();
 		log_debug("Finalised");
-	} else {
-		log_debug("Already finalised");
 	}
-
-	// Release lock
-	log_debug("Py3kFinalize release");
-	ReleaseMutex(lock);
 }
 
 void Py3kReinitialize() {
@@ -138,12 +136,6 @@ void Py3kReinitialize() {
 }
 
 void Py3kWrapper() {
-	// Create lock
-	if (lock == nullptr) {
-		log_debug("Creating mutex");
-		lock = CreateMutex(nullptr, false, nullptr);
-	}
-
 	// (Re)Initialize
 	Py3kReinitialize();
 
@@ -165,3 +157,4 @@ void Py3kWrapper() {
 		scriptWait(0);
 	}
 }
+

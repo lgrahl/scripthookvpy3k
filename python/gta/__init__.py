@@ -23,15 +23,31 @@ _names = []
 
 def _init(console=False):
     """
-    Initialise requirements and startup scripts in an event loop.
+    Run startup function in another thread.
 
     Arguments:
         - `console`: Use console logging instead of file logging.
     """
-    global _thread, _loop, _utils, _names, _tasks
+    global _thread, _loop
 
-    # Store current thread
-    _thread = threading.current_thread()
+    # Store event loop
+    _loop = asyncio.get_event_loop()
+
+    # Start thread
+    _thread = threading.Thread(target=_start, args=(_loop, console), daemon=False)
+    _thread.start()
+
+
+def _start(loop, console):
+    """
+    Initialise requirements and startup scripts in an event loop.
+
+    Arguments:
+        - `loop`: The :class:`asyncio.BaseEventLoop` that is going to
+          be used.
+        - `console`: Use console logging instead of file logging.
+    """
+    global _utils, _names, _tasks
 
     # Import utils
     # Note: This needs to be done here because the logging module binds
@@ -40,8 +56,8 @@ def _init(console=False):
     from gta import utils
     _utils = utils
 
-    # Store event loop
-    _loop = asyncio.get_event_loop()
+    # Set event loop
+    asyncio.set_event_loop(loop)
 
     # Setup logging
     _utils.setup_logging(console)
@@ -66,7 +82,7 @@ def _init(console=False):
 
 def _exit():
     """
-    Schedule stopping scripts and exit.
+    Schedule stopping scripts and join the thread.
     """
     logger = _utils.get_logger()
 

@@ -9,14 +9,17 @@
 #include "keyboard.h"
 #include "natives_wrap.h"
 
+#include <Python.h>
 #include <iostream>
 #include <fstream>
-#include <Python.h>
 
-void log_(char* type, char* message);
-void log_debug(char* message);
-void log_error(char* message);
-DWORD WINAPI Py3kThreadInitialize(LPVOID _);
+char* time_now();
+void log_(char* type, std::string message);
+void log_(char* type, wchar_t* message);
+void log_debug(std::string message);
+void log_debug(wchar_t* message);
+void log_error(std::string message);
+void log_error(wchar_t* message);
 void Py3kInitialize();
 void Py3kFinalize();
 void Py3kReinitialize();
