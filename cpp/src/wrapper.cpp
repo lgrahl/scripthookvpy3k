@@ -44,6 +44,8 @@ void log_error(wchar_t* message) {
 }
 
 void Py3kInitialize() {
+	log_debug("Py3kInitialize called");
+
 	if (!Py_IsInitialized()) {
 		PyObject* pName;
 		PyObject* pModule;
@@ -104,6 +106,8 @@ void Py3kInitialize() {
 }
 
 void Py3kFinalize() {
+	log_debug("Py3kFinalize called");
+
 	if (Py_IsInitialized()) {
 		log_debug("Finalising");
 
@@ -136,15 +140,25 @@ void Py3kReinitialize() {
 }
 
 void Py3kWrapper() {
+	log_debug("Py3kWrapper called");
+
 	// (Re)Initialize
 	Py3kReinitialize();
 
 	// Main loop
 	while (true) {
+		// Stop
+		if (IsKeyJustUp(VK_DELETE)) {
+			// Finalize
+			log_debug("Enforcing stop");
+			Py3kFinalize();
+			continue;
+		}
+
 		// Restart
 		if (IsKeyJustUp(VK_F12)) {
 			// Reinitialize
-			log_debug("Reinitialising Python");
+			log_debug("Reloading");
 			Py3kReinitialize();
 			continue;
 		}
