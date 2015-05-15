@@ -13,7 +13,7 @@ __status__ = 'Development'
 __version__ = '0.0.1'
 # A list of dependencies in the requirement specifiers format
 # See: https://pip.pypa.io/en/latest/reference/pip_install.html#requirement-specifiers
-__dependencies__ = ('requests>=2.7.0',)
+__dependencies__ = ('aiohttp>=0.15.3',)
 
 
 @asyncio.coroutine
