@@ -1,4 +1,5 @@
 import ast
+import functools
 import os
 import pkgutil
 import importlib
@@ -144,6 +145,7 @@ def _start_scripts(loop):
     for name, script in _import_scripts():
         logger.info('Starting script "{}"', name)
         task = loop.create_task(script())
+        task.add_done_callback(functools.partial(_script_done, name=name))
         names.append(name)
         tasks.append(task)
     logger.info('Scripts started')
@@ -247,3 +249,26 @@ def _scrape_metadata(path, name, is_package):
                 except (ValueError, SyntaxError) as exc:
                     raise ImportScriptError(name) from exc
     return metadata
+
+
+def _script_done(task, name=None):
+    """
+    Log the result or the exception of a script that returned.
+
+    Arguments:
+        - `task`: The :class:`asyncio.Future` instance of the script.
+        - `name`: The name of the script.
+    """
+    logger = _utils.get_logger()
+
+    # Check for exception
+    exc = task.exception()
+    if exc is not None:
+        try:
+            raise ScriptExecutionError(name) from exc
+        except ScriptError as exc:
+            logger.exception(exc)
+    else:
+        result = task.result()
+        result = ' with result "{}"'.format(result) if result is not None else ''
+        logger.info('Script "{}" returned{}', name, result)

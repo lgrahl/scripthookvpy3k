@@ -1,4 +1,5 @@
-__all__ = ('ScriptError', 'ImportScriptError', 'InstallDependencyError')
+__all__ = ('ScriptError', 'ImportScriptError', 'InstallDependencyError',
+           'ScriptExecutionError')
 
 
 class ScriptError(Exception):
@@ -19,7 +20,7 @@ class ImportScriptError(ScriptError):
         self.name = name
 
     def __str__(self):
-        return 'Could not import script: {}'.format(self.name)
+        return 'Could not import script "{}"'.format(self.name)
 
 
 class InstallDependencyError(ScriptError):
@@ -33,4 +34,18 @@ class InstallDependencyError(ScriptError):
         self.dependency = dependency
 
     def __str__(self):
-        return 'Could not install dependency: {}'.format(self.dependency)
+        return 'Could not install dependency "{}"'.format(self.dependency)
+
+
+class ScriptExecutionError(ScriptError):
+    """
+    An uncaught exception was raised in a script.
+
+    Arguments:
+        - `name`: The name of the script.
+    """
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return 'Script "{}" returned with an exception'.format(self.name)
