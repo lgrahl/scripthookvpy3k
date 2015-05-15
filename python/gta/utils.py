@@ -78,7 +78,7 @@ def setup_logging(console):
     # Setup formatter and handler
     formatter = logging.Formatter(
         fmt='{asctime} {name:<22} {levelname:<18} {message}',
-        datefmt='%Y-%m-%d %H-%M:%S',
+        datefmt='%Y-%m-%d %H:%M:%S',
         style='{'
     )
 

@@ -2,10 +2,10 @@ import ast
 import os
 import pkgutil
 import importlib
-import atexit
 import asyncio
+import threading
 
-from gta import utils, exceptions
+from gta import exceptions
 from gta.exceptions import *
 
 __author__ = 'Lennart Grahl <lennart.grahl@gmail.com>'
@@ -13,62 +13,139 @@ __status__ = 'Development'
 __version__ = '0.9.0'
 __all__ = exceptions.__all__
 
+# Global objects
+_utils = None
+_thread = None
+_loop = None
+_tasks = []
+_names = []
+
 
 def _init(console=False):
     """
-    Initialise requirements and startup scripts.
+    Initialise requirements and startup scripts in an event loop.
 
     Arguments:
         - `console`: Use console logging instead of file logging.
     """
+    global _thread, _loop, _utils, _names, _tasks
+
+    # Store current thread
+    _thread = threading.current_thread()
+
+    # Import utils
+    # Note: This needs to be done here because the logging module binds
+    #       some vars to the thread which causes exceptions when
+    #       pip invokes the logger.
+    from gta import utils
+    _utils = utils
+
+    # Store event loop
+    _loop = asyncio.get_event_loop()
+
     # Setup logging
-    utils.setup_logging(console)
+    _utils.setup_logging(console)
 
     # Print some debug information
-    logger = utils.get_logger()
+    logger = _utils.get_logger()
     logger.info('Started')
 
     # Start scripts
-    _start_scripts()
+    _names, _tasks = _start_scripts(_loop)
+    if len(_tasks) > 0:
+        try:
+            _loop.run_until_complete(asyncio.wait(_tasks))
+        except RuntimeError:
+            # Report bad behaving scripts
+            scripts = ', '.join(('"{}"'.format(name) for name, task in zip(_names, _tasks)
+                                 if not task.done()))
+            logger.warning('Enforced stopping loop, caused by script(s): {}', scripts)
+
+    logger.info('Complete')
 
 
-def _start_scripts():
+def _exit():
+    """
+    Schedule stopping scripts and exit.
+    """
+    logger = _utils.get_logger()
+
+    # Schedule stopping scripts
+    if _loop is not None and not _loop.is_closed():
+        def __stop(loop):
+            loop.create_task(_stop(loop))
+        _loop.call_soon_threadsafe(__stop, _loop)
+
+    # Wait until the thread of the event loop terminates
+    if _thread is not None:
+        logger.debug('Joining')
+        _thread.join()
+
+    logger.info('Exiting')
+
+
+@asyncio.coroutine
+def _stop(loop, seconds=1.0):
+    """
+    Stop scripts, wait for tasks to clean up or until a timeout occurs
+    and stop the loop.
+
+    Arguments:
+        - `loop`: The :class:`asyncio.BaseEventLoop` that is being used.
+        - `seconds`: The maximum amount of seconds to wait.
+    """
+    logger = _utils.get_logger()
+
+    # Stop scripts
+    _stop_scripts(_tasks)
+
+    # Wait for scripts to clean up
+    logger.debug('Waiting for scripts to stop')
+    yield from asyncio.wait(_tasks, timeout=seconds)
+
+    # Stop loop
+    logger.debug('Stopping loop')
+    loop.stop()
+
+
+def _start_scripts(loop):
     """
     Run the main function of all scripts from the `scripts` package.
+
+    Arguments:
+        - `loop`: The :class:`asyncio.BaseEventLoop` that is going to be used.
+
+    Return a tuple containing a list of imported script names and
+    another list that maps the script names to:class:`asyncio.Task`
+    instances.
     """
-    logger = utils.get_logger()
+    logger = _utils.get_logger()
     logger.info('Starting scripts')
 
     # Start each script as a coroutine
-    loop = asyncio.get_event_loop()
+    names = []
     tasks = []
     for name, script in _import_scripts():
         logger.info('Starting script "{}"', name)
         task = loop.create_task(script())
+        names.append(name)
         tasks.append(task)
     logger.info('Scripts started')
-    if len(tasks) > 0:
-        loop.run_until_complete(asyncio.wait(tasks))
-    loop.close()
+    return names, tasks
 
 
-def _stop_scripts():
+def _stop_scripts(tasks):
     """
     Cancel scripts that are still running.
-    """
-    logger = utils.get_logger()
-    logger.info('Stopping scripts')
-    # TODO: Cancel tasks
 
-
-@atexit.register
-def _exit():
+    Arguments:
+        - `tasks`: A list of :class:`asyncio.Task` instances.
     """
-    Stop running scripts and clean up before exiting.
-    """
-    logger = utils.get_logger()
-    _stop_scripts()
-    logger.info('Exiting')
+    logger = _utils.get_logger()
+    logger.info('Cancelling scripts')
+    for task in tasks:
+        task.cancel()
+    logger.info('Scripts cancelled')
 
 
 def _import_scripts():
@@ -79,7 +156,7 @@ def _import_scripts():
     Return a list containing tuples of each scripts name and the
     callback to the main function of the script.
     """
-    logger = utils.get_logger()
+    logger = _utils.get_logger()
 
     # Import parent package
     parent_package = 'scripts'
@@ -105,7 +182,7 @@ def _import_scripts():
             try:
                 # Install dependencies
                 for dependency in dependencies:
-                    utils.install_dependency(dependency)
+                    _utils.install_dependency(dependency)
             except TypeError as exc:
                 raise ScriptError() from exc
 
