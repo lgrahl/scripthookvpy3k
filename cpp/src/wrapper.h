@@ -13,7 +13,7 @@
 #include <iostream>
 #include <fstream>
 
-#define PY3KWRAPPER_VERSION "0.9.0"
+#define PY3KWRAPPER_VERSION "0.9.1"
 
 char* wchar_to_string(const wchar_t* wchar_message);
 char* time_now();

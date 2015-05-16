@@ -7,7 +7,7 @@ import aiohttp
 
 __author__ = 'Lennart Grahl <lennart.grahl@gmail.com>'
 __status__ = 'Development'
-__version__ = '0.0.1'
+__version__ = '0.9.1'
 __dependencies__ = ('aiohttp>=0.15.3',)
 
 
@@ -41,7 +41,11 @@ def main():
         # Get weather in Los Angeles
         logger.debug('Requesting {}', url)
         response = yield from aiohttp.request('get', url)
-        json = yield from response.json()
+        try:
+            json = yield from response.json()
+        except ValueError:
+            logger.warning('Parsing response failed')
+            continue
         logger.debug('Response: {}', json)
 
         # Calculate weather type
@@ -67,7 +71,8 @@ def main():
             else:
                 weather, *_ = weather_types
         except (ValueError, KeyError):
-            pass
+            logger.warning('Could not parse weather data')
+            continue
 
         # Apply weather type in GTA
         logger.info('Setting weather to: {}', weather)

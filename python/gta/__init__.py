@@ -1,6 +1,7 @@
+import os
+os.environ['PYTHONASYNCIODEBUG'] = '1'
 import ast
 import functools
-import os
 import pkgutil
 import importlib
 import asyncio
@@ -12,7 +13,7 @@ from gta.exceptions import *
 
 __author__ = 'Lennart Grahl <lennart.grahl@gmail.com>'
 __status__ = 'Development'
-__version__ = '0.9.2'
+__version__ = '0.9.3'
 __all__ = exceptions.__all__
 
 
@@ -81,9 +82,16 @@ def _start(loop, console):
         try:
             _loop.run_until_complete(asyncio.wait(_tasks))
         except RuntimeError:
+            bad_scripts = [(name, task) for name, task in zip(_names, _tasks)
+                           if not task.done()]
+
+            # Mark bad behaving scripts as done and retrieve exception manually
+            for name, task in bad_scripts:
+                task.set_exception(BadBehavingScriptError(name))
+                _script_done(task, name=name)
+
             # Report bad behaving scripts
-            scripts = ', '.join(('"{}"'.format(name) for name, task in zip(_names, _tasks)
-                                 if not task.done()))
+            scripts = ', '.join(('"{}"'.format(name) for name, task in bad_scripts))
             logger.warning('Enforced stopping loop, caused by script(s): {}', scripts)
 
     logger.info('Complete')
@@ -289,7 +297,10 @@ def _script_done(task, name=None):
             # Check for exception or result
             script_exc = task.exception()
             if script_exc is not None:
-                raise ScriptExecutionError(name) from script_exc
+                if isinstance(script_exc, ScriptError):
+                    logger.exception(script_exc)
+                else:
+                    raise ScriptExecutionError(name) from script_exc
             else:
                 result = task.result()
                 result = ' with result "{}"'.format(result) if result is not None else ''

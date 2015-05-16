@@ -1,5 +1,5 @@
 __all__ = ('ScriptError', 'ImportScriptError', 'InstallDependencyError',
-           'DependencyBlacklistedError', 'ScriptExecutionError')
+           'DependencyBlacklistedError', 'ScriptExecutionError', 'BadBehavingScriptError')
 
 
 class ScriptError(Exception):
@@ -64,3 +64,17 @@ class ScriptExecutionError(ScriptError):
 
     def __str__(self):
         return 'Script "{}" returned with an exception'.format(self.name)
+
+
+class BadBehavingScriptError(ScriptError):
+    """
+    A script did not stop in time after it has been cancelled.
+
+    Arguments:
+        - `name`: The name of the script.
+    """
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return 'Script "{}" did not stop in time'.format(self.name)

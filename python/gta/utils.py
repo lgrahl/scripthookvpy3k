@@ -91,15 +91,20 @@ def setup_logging(console):
         handler = logging.FileHandler('scripthookvpy3k.log')
         handler.setFormatter(formatter)
 
-    # Setup gta logger
-    logger = logging.getLogger('gta')
-    logger.setLevel(logging.DEBUG)
-    logger.addHandler(handler)
+    # Redirect warnings to the logger
+    logging.captureWarnings(True)
 
-    # Setup pip logger
-    logger = logging.getLogger('pip')
-    logger.setLevel(logging.WARNING)
-    logger.addHandler(handler)
+    # Setup loggers
+    loggers = (
+        ('gta', logging.DEBUG),
+        ('py.warnings', logging.WARNING),
+        ('asyncio', logging.DEBUG),
+        ('pip', logging.WARNING)
+    )
+    for name, level in loggers:
+        logger = logging.getLogger(name)
+        logger.setLevel(level)
+        logger.addHandler(handler)
 
 
 def get_logger(name='gta'):
