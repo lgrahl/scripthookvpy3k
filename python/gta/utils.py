@@ -2,6 +2,7 @@ import logging
 import os
 import pip.commands
 import pip.exceptions
+import pkg_resources
 
 from gta.exceptions import *
 
@@ -114,6 +115,9 @@ def get_logger(name='gta'):
     return CurlyBracketFormattingAdapter(logging.getLogger(name))
 
 
+dependencies_blacklist = {'aiohttp', 'numpy', 'scipy'}
+
+
 def install_dependency(dependency):
     """
     Install a dependency using :class:`pip`.
@@ -130,17 +134,28 @@ def install_dependency(dependency):
     path = os.path.abspath(os.getcwd())
 
     try:
-        # Install dependency
-        message = 'Checking dependency "{}" for path "{}"'
-        logger.debug(message, dependency, os.path.relpath(path))
-        command = pip.commands.InstallCommand(isolated=True)
-        # Note: We can't run 'main' because it overrides our logging settings
-        options, args = command.parse_args([
-            '--disable-pip-version-check',
-            '--upgrade',
-            '--target', path,
-            dependency
-        ])
-        command.run(options, args)
-    except pip.exceptions.PipError as exc:
-        raise InstallDependencyError(dependency) from exc
+        # Check if dependency is satisfied
+        pkg_resources.require(dependency)
+    except pkg_resources.ResolutionError:
+        # Check if dependency is blacklisted
+        for requirement in pkg_resources.parse_requirements(dependency):
+            if requirement.project_name in dependencies_blacklist:
+                raise DependencyBlacklistedError(dependency)
+
+        try:
+            # Install dependency
+            message = 'Checking dependency "{}" for path "{}"'
+            logger.debug(message, dependency, os.path.relpath(path))
+            command = pip.commands.InstallCommand(isolated=True)
+            # Note: We can't run 'main' because it overrides our logging settings
+            options, args = command.parse_args([
+                '--disable-pip-version-check',
+                '--upgrade',
+                '--target', path,
+                dependency
+            ])
+            command.run(options, args)
+        except pip.exceptions.PipError as exc:
+            raise InstallDependencyError(dependency) from exc
+    else:
+        logger.debug('Dependency "{}" already satisfied', dependency)

@@ -1,5 +1,5 @@
 __all__ = ('ScriptError', 'ImportScriptError', 'InstallDependencyError',
-           'ScriptExecutionError')
+           'DependencyBlacklistedError', 'ScriptExecutionError')
 
 
 class ScriptError(Exception):
@@ -28,7 +28,22 @@ class InstallDependencyError(ScriptError):
     A script dependency could not be installed.
 
     Arguments:
-        - `dependency`: The dependency.
+        - `dependency`: The dependency name.
+    """
+    def __init__(self, dependency):
+        self.dependency = dependency
+
+    def __str__(self):
+        return 'Dependency needs to be installed manually via pip "{}"'.format(
+            self.dependency)
+
+
+class DependencyBlacklistedError(ScriptError):
+    """
+    A script dependency is blacklisted and cannot be installed.
+
+    Arguments:
+        - `dependency`: The dependency name.
     """
     def __init__(self, dependency):
         self.dependency = dependency
