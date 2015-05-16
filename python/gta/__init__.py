@@ -5,6 +5,7 @@ import pkgutil
 import importlib
 import asyncio
 import threading
+import atexit
 
 from gta import exceptions
 from gta.exceptions import *
@@ -14,12 +15,17 @@ __status__ = 'Development'
 __version__ = '0.9.2'
 __all__ = exceptions.__all__
 
-# Global objects
-_utils = None
-_thread = None
-_loop = None
-_tasks = []
-_names = []
+
+def _reset_globals():
+    """
+    Set global attributes.
+    """
+    global _utils, _thread, _loop, _tasks, _names
+    _utils = None
+    _thread = None
+    _loop = None
+    _tasks = []
+    _names = []
 
 
 def _init(console=False):
@@ -29,6 +35,7 @@ def _init(console=False):
     Arguments:
         - `console`: Use console logging instead of file logging.
     """
+    _reset_globals()
     global _thread, _loop
 
     # Store event loop
@@ -84,15 +91,26 @@ def _start(loop, console):
 
 def _exit():
     """
-    Schedule stopping scripts and join the thread.
+    Schedule stopping scripts.
     """
     logger = _utils.get_logger()
 
     # Schedule stopping scripts
     if _loop is not None and not _loop.is_closed():
+        logger.debug('Scheduling script termination')
+
         def __stop(loop):
+            logger.debug('Stopping scripts')
             loop.create_task(_stop(loop))
         _loop.call_soon_threadsafe(__stop, _loop)
+
+
+@atexit.register
+def _join():
+    """
+    Try to join the event loop thread.
+    """
+    logger = _utils.get_logger()
 
     # Wait until the thread of the event loop terminates
     if _thread is not None:
@@ -101,6 +119,8 @@ def _exit():
         if _thread.is_alive():
             logger.error('Joining timed out, terminating ungracefully')
 
+    # Reset globals and exit
+    _reset_globals()
     logger.info('Exiting')
 
 
@@ -264,14 +284,20 @@ def _script_done(task, name=None):
     """
     logger = _utils.get_logger()
 
-    # Check for exception
-    exc = task.exception()
-    if exc is not None:
+    try:
         try:
-            raise ScriptExecutionError(name) from exc
-        except ScriptError as exc:
-            logger.exception(exc)
-    else:
-        result = task.result()
-        result = ' with result "{}"'.format(result) if result is not None else ''
-        logger.info('Script "{}" returned{}', name, result)
+            # Check for exception or result
+            script_exc = task.exception()
+            if script_exc is not None:
+                raise ScriptExecutionError(name) from script_exc
+            else:
+                result = task.result()
+                result = ' with result "{}"'.format(result) if result is not None else ''
+                logger.info('Script "{}" returned{}', name, result)
+        except asyncio.CancelledError:
+            logger.info('Script "{}" cancelled', name)
+        except asyncio.InvalidStateError as exc:
+            raise ScriptError('Script "{}" done callback called but script is not done'
+                              ''.format(name)) from exc
+    except ScriptError as exc:
+        logger.exception(exc)

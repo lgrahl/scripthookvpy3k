@@ -119,6 +119,7 @@ void Py3kFinalize() {
 		}
 
 		// Finalise interpreter
+		log_debug("Finalising");
 		Py_Finalize();
 		log_debug("Finalised");
 
