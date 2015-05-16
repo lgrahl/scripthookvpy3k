@@ -144,7 +144,7 @@ def install_dependency(dependency):
 
         try:
             # Install dependency
-            message = 'Checking dependency "{}" for path "{}"'
+            message = 'Installing dependency "{}" into path "{}"'
             logger.debug(message, dependency, os.path.relpath(path))
             command = pip.commands.InstallCommand(isolated=True)
             # Note: We can't run 'main' because it overrides our logging settings

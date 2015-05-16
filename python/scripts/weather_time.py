@@ -13,6 +13,9 @@ __dependencies__ = ('aiohttp>=0.15.3',)
 
 @asyncio.coroutine
 def main():
+    """
+    Applies the current weather from Los Angeles in game.
+    """
     url = 'http://api.openweathermap.org/data/2.5/weather?id=3882428'
     logger = gta.utils.get_logger('gta.weather-time')
     map_weather_id = {
