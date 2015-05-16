@@ -13,7 +13,7 @@ from gta.exceptions import *
 
 __author__ = 'Lennart Grahl <lennart.grahl@gmail.com>'
 __status__ = 'Development'
-__version__ = '0.9.3'
+__version__ = '0.9.4'
 __all__ = exceptions.__all__
 
 
@@ -89,7 +89,7 @@ def _start(loop, console):
             for name, task in bad_scripts:
                 # Note: We log the task so scripters can see in which line their script
                 # was running when cancelled
-                logger.error('Script "{}" did not stop in time\nTask: {}', name, task)
+                logger.error('Script "{}" did not stop in time, Task: {}', name, task)
                 # Note: At this point, the task is marked as done but callbacks will
                 # not be called anymore. We are just doing this to comfort asyncio
                 # to not throw any exceptions because the task wasn't marked done
