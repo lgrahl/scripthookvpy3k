@@ -13,7 +13,7 @@ from gta.exceptions import *
 
 __author__ = 'Lennart Grahl <lennart.grahl@gmail.com>'
 __status__ = 'Development'
-__version__ = '0.9.4'
+__version__ = '0.9.5'
 __all__ = exceptions.__all__
 
 
@@ -37,26 +37,21 @@ def _init(console=False):
         - `console`: Use console logging instead of file logging.
     """
     _reset_globals()
-    global _thread, _loop
-
-    # Store event loop
-    _loop = asyncio.get_event_loop()
+    global _thread
 
     # Start thread
-    _thread = threading.Thread(target=_start, args=(_loop, console), daemon=True)
+    _thread = threading.Thread(target=_start, args=(console,), daemon=True)
     _thread.start()
 
 
-def _start(loop, console):
+def _start(console):
     """
     Initialise requirements and startup scripts in an event loop.
 
     Arguments:
-        - `loop`: The :class:`asyncio.BaseEventLoop` that is going to
-          be used.
         - `console`: Use console logging instead of file logging.
     """
-    global _utils, _names, _tasks
+    global _utils, _loop, _names, _tasks
 
     # Import utils
     # Note: This needs to be done here because the logging module binds
@@ -65,8 +60,9 @@ def _start(loop, console):
     from gta import utils
     _utils = utils
 
-    # Set event loop
-    asyncio.set_event_loop(loop)
+    # Create event loop
+    _loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(_loop)
 
     # Setup logging
     _utils.setup_logging(console)
