@@ -23,7 +23,7 @@ char* time_now() {
 
 void log_(const char* type, const char* message) {
 	char* now = time_now();
-	logger << now << type << ": " << message << std::endl;
+	logger << now << "@" << GetCurrentThreadId() << " " << type << ": " << message << std::endl;
 	logger.flush();
 	delete now;
 }
@@ -51,7 +51,7 @@ void Py3kInitialize() {
 
 		// Initialise interpreter
 		log_debug("Initialising");
-		Py_Initialize();
+		Py_InitializeEx(0);
 		log_debug("Initialised");
 
 		// Initialise and acquire GIL
