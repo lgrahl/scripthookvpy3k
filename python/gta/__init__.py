@@ -11,7 +11,7 @@ from gta.exceptions import *
 
 __author__ = 'Lennart Grahl <lennart.grahl@gmail.com>'
 __status__ = 'Development'
-__version__ = '0.9.1'
+__version__ = '0.9.2'
 __all__ = exceptions.__all__
 
 # Global objects
@@ -35,7 +35,7 @@ def _init(console=False):
     _loop = asyncio.get_event_loop()
 
     # Start thread
-    _thread = threading.Thread(target=_start, args=(_loop, console), daemon=False)
+    _thread = threading.Thread(target=_start, args=(_loop, console), daemon=True)
     _thread.start()
 
 
@@ -97,7 +97,9 @@ def _exit():
     # Wait until the thread of the event loop terminates
     if _thread is not None:
         logger.debug('Joining')
-        _thread.join()
+        _thread.join(timeout=1.1)
+        if _thread.is_alive():
+            logger.error('Joining timed out, terminating ungracefully')
 
     logger.info('Exiting')
 

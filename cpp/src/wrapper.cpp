@@ -118,13 +118,13 @@ void Py3kFinalize() {
 			log_error("Exit function is not callable");
 		}
 
-		// Reset vars
-		pExit = nullptr;
-		pThreadState = nullptr;
-
 		// Finalise interpreter
 		Py_Finalize();
 		log_debug("Finalised");
+
+		// Reset vars
+		pExit = nullptr;
+		pThreadState = nullptr;
 	}
 }
 
