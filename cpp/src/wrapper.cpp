@@ -59,11 +59,11 @@ void Py3kInitialize() {
 		PyEval_InitThreads();
 
 		// Get version (borrowed)
-		log_debug(Py_GetVersion());
+		log_debug((std::string("Python ") + std::string(Py_GetVersion())).c_str());
 
 		// Get path (borrowed)
 		char* path = wchar_to_string(Py_GetPath());
-		log_debug(path);
+		log_debug((std::string("Path: ") + std::string(path)).c_str());
 		delete path;
 
 		// Reference module name
@@ -135,6 +135,7 @@ void Py3kReinitialize() {
 
 void Py3kWrapper() {
 	log_debug("Py3kWrapper called");
+	log_debug((std::string("Version: ") + std::string(PY3KWRAPPER_VERSION)).c_str());
 
 	// (Re)Initialize
 	Py3kReinitialize();
