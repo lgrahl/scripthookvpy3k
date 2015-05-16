@@ -11,7 +11,7 @@ from gta.exceptions import *
 
 __author__ = 'Lennart Grahl <lennart.grahl@gmail.com>'
 __status__ = 'Development'
-__version__ = '0.9.0'
+__version__ = '0.9.1'
 __all__ = exceptions.__all__
 
 # Global objects
@@ -66,6 +66,7 @@ def _start(loop, console):
     # Print some debug information
     logger = _utils.get_logger()
     logger.info('Started')
+    logger.debug('Version: {}', __version__)
 
     # Start scripts
     _names, _tasks = _start_scripts(_loop)
