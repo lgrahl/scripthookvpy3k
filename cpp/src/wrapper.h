@@ -13,13 +13,13 @@
 #include <iostream>
 #include <fstream>
 
+#define PY3KWRAPPER_VERSION "0.9.0"
+
+char* wchar_to_string(const wchar_t* wchar_message);
 char* time_now();
-void log_(char* type, std::string message);
-void log_(char* type, wchar_t* message);
-void log_debug(std::string message);
-void log_debug(wchar_t* message);
-void log_error(std::string message);
-void log_error(wchar_t* message);
+void log_(const char* type, const char* message);
+void log_debug(const char* message);
+void log_error(const char* message);
 void Py3kInitialize();
 void Py3kFinalize();
 void Py3kReinitialize();

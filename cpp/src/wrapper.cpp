@@ -4,6 +4,14 @@ PyThreadState* pThreadState;
 PyObject* pExit = nullptr;
 std::ofstream logger("scripthookvpy3k.wrapper.log", std::ios_base::app | std::ios_base::out);
 
+char* wchar_to_string(const wchar_t* wchar_message) {
+	size_t size = (wcslen(wchar_message) + 1) * 2;
+	char* message = new char[size];
+	size_t converted = 0;
+	wcstombs_s(&converted, message, size, wchar_message, _TRUNCATE);
+	return message;
+}
+
 char* time_now() {
 	char* buffer = new char[80];
 	time_t now = time(0);
@@ -13,33 +21,18 @@ char* time_now() {
 	return buffer;
 }
 
-void log_(char* type, std::string message) {
-	char* now = time_now();
-	logger << now << type << ": " << message.c_str() << std::endl;
-	logger.flush();
-	delete now;
-}
-
-void log_(char* type, wchar_t* message) {
+void log_(const char* type, const char* message) {
 	char* now = time_now();
 	logger << now << type << ": " << message << std::endl;
 	logger.flush();
 	delete now;
 }
 
-void log_debug(std::string message) {
+void log_debug(const char* message) {
 	log_("Debug", message);
 }
 
-void log_debug(wchar_t* message) {
-	log_("Debug", message);
-}
-
-void log_error(std::string message) {
-	log_("Error", message);
-}
-
-void log_error(wchar_t* message) {
+void log_error(const char* message) {
 	log_("Error", message);
 }
 
@@ -66,11 +59,12 @@ void Py3kInitialize() {
 		PyEval_InitThreads();
 
 		// Get version (borrowed)
-		log_debug(std::string(Py_GetVersion()));
+		log_debug(Py_GetVersion());
 
 		// Get path (borrowed)
-		wchar_t* path = Py_GetPath();
+		char* path = wchar_to_string(Py_GetPath());
 		log_debug(path);
+		delete path;
 
 		// Reference module name
 		pName = PyUnicode_FromString("gta");
