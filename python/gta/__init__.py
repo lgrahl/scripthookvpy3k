@@ -85,10 +85,15 @@ def _start(loop, console):
             bad_scripts = [(name, task) for name, task in zip(_names, _tasks)
                            if not task.done()]
 
-            # Mark bad behaving scripts as done and retrieve exception manually
+            # Mark bad behaving scripts as done
             for name, task in bad_scripts:
-                task.set_exception(BadBehavingScriptError(name))
-                _script_done(task, name=name)
+                # Note: We log the task so scripters can see in which line their script
+                # was running when cancelled
+                logger.error('Script "{}" did not stop in time\nTask: {}', name, task)
+                # Note: At this point, the task is marked as done but callbacks will
+                # not be called anymore. We are just doing this to comfort asyncio
+                # to not throw any exceptions because the task wasn't marked done
+                task.set_result(BadBehavingScriptError())
 
             # Report bad behaving scripts
             scripts = ', '.join(('"{}"'.format(name) for name, task in bad_scripts))
@@ -297,10 +302,7 @@ def _script_done(task, name=None):
             # Check for exception or result
             script_exc = task.exception()
             if script_exc is not None:
-                if isinstance(script_exc, ScriptError):
-                    logger.exception(script_exc)
-                else:
-                    raise ScriptExecutionError(name) from script_exc
+                raise ScriptExecutionError(name) from script_exc
             else:
                 result = task.result()
                 result = ' with result "{}"'.format(result) if result is not None else ''

@@ -69,12 +69,4 @@ class ScriptExecutionError(ScriptError):
 class BadBehavingScriptError(ScriptError):
     """
     A script did not stop in time after it has been cancelled.
-
-    Arguments:
-        - `name`: The name of the script.
     """
-    def __init__(self, name):
-        self.name = name
-
-    def __str__(self):
-        return 'Script "{}" did not stop in time'.format(self.name)
