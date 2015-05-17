@@ -29,7 +29,7 @@ the [/python](/python) directory.
 You can (and should) provide metadata in your script. See
 [metadata.py](/python/scripts/metadata.py) for details.
 
-To run the script in GTA V, copy your ``.py`` script file into ``scripts`` in your
+To run the script in GTA V, copy your ``.py`` script file into ``python/scripts`` in your
 GTA V folder.
 
 Press F12 in game to reload all scripts.
