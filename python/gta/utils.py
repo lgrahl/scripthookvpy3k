@@ -6,8 +6,8 @@ import pkg_resources
 
 from gta.exceptions import *
 
-__all__ = ('Message', 'CurlyBracketFormattingAdapter', 'setup_logging', 'get_logger',
-           'install_dependency')
+__all__ = ('Message', 'CurlyBracketFormattingAdapter', 'get_directory', 'setup_logging',
+           'get_logger', 'install_dependency')
 
 
 class Message:
@@ -66,6 +66,10 @@ class CurlyBracketFormattingAdapter(logging.LoggerAdapter):
             msg, kwargs = self.process(msg, kwargs)
             # noinspection PyProtectedMember
             self.logger._log(level, Message(msg, args), (), **kwargs)
+
+
+def get_directory():
+    return os.path.abspath(os.path.join(os.getcwd(), 'python'))
 
 
 def setup_logging(console):
@@ -136,7 +140,7 @@ def install_dependency(dependency):
     logger = get_logger()
 
     # Get path
-    path = os.path.abspath(os.getcwd())
+    path = os.path.abspath(get_directory())
 
     try:
         # Check if dependency is satisfied

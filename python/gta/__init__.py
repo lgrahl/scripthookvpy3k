@@ -1,5 +1,8 @@
 import os
+
+# Enable asyncio debug logging
 os.environ['PYTHONASYNCIODEBUG'] = '1'
+
 import ast
 import functools
 import pkgutil
@@ -13,7 +16,7 @@ from gta.exceptions import *
 
 __author__ = 'Lennart Grahl <lennart.grahl@gmail.com>'
 __status__ = 'Development'
-__version__ = '0.9.5'
+__version__ = '0.9.6'
 __all__ = exceptions.__all__
 
 
@@ -60,15 +63,15 @@ def _start(console):
     from gta import utils
     _utils = utils
 
+    # Setup logging
+    _utils.setup_logging(console)
+    logger = _utils.get_logger()
+
     # Create event loop
     _loop = asyncio.new_event_loop()
     asyncio.set_event_loop(_loop)
 
-    # Setup logging
-    _utils.setup_logging(console)
-
     # Print some debug information
-    logger = _utils.get_logger()
     logger.info('Started')
     logger.debug('Version: {}', __version__)
 
@@ -102,6 +105,9 @@ def _exit():
     """
     Schedule stopping scripts.
     """
+    # Note: _utils might be none when _init wasn't called
+    if _utils is None:
+        return
     logger = _utils.get_logger()
 
     # Schedule stopping scripts
@@ -119,6 +125,9 @@ def _join():
     """
     Try to join the event loop thread.
     """
+    # Note: _utils might be none when _init wasn't called
+    if _utils is None:
+        return
     logger = _utils.get_logger()
 
     # Wait until the thread of the event loop terminates
@@ -213,7 +222,7 @@ def _import_scripts():
     importlib.import_module(parent_package, __name__)
 
     # Import scripts from package
-    path = os.path.join(os.getcwd(), parent_package)
+    path = os.path.join(_utils.get_directory(), parent_package)
     scripts = []
     for importer, name, is_package in pkgutil.iter_modules([path]):
         try:
