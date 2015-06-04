@@ -11,12 +11,14 @@ import asyncio
 import threading
 import atexit
 
+import gta_native
+
 from gta import exceptions
 from gta.exceptions import *
 
 __author__ = 'Lennart Grahl <lennart.grahl@gmail.com>'
 __status__ = 'Development'
-__version__ = '0.9.6'
+__version__ = '0.9.7'
 __all__ = exceptions.__all__
 
 
@@ -73,7 +75,8 @@ def _start(console):
 
     # Print some debug information
     logger.info('Started')
-    logger.debug('Version: {}', __version__)
+    logger.info('Version: {}', __version__)
+    logger.info('Natives Date: {}', gta_native.__version__)
 
     # Start scripts
     _names, _tasks = _start_scripts(_loop)

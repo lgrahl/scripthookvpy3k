@@ -37,12 +37,18 @@ def main():
         fail('SWIG Version >= {} required'.format(swig_required_version), 2)
 
     # Map namespaces to function names
+    date = 'Unknown'
     functions = {}
     namespace = 'default'
     print('Mapping namespaces to functions')
     with open(natives_h) as natives:
         for line in natives:
             line = line.strip()
+
+            # Date
+            if line.startswith('// Generated'):
+                _, date_ = line.split('// Generated')
+                date = date_.strip()
 
             # Namespace
             if line.startswith('namespace'):
@@ -69,7 +75,7 @@ def main():
     skip = 0
     indent = ' ' * 4
     init = []
-    middle = []
+    middle = ["__version__ = '{}'\n\n\n".format(date.strip("'"))]
     tail = []
 
     def add_normal(_line):
