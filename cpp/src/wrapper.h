@@ -13,8 +13,9 @@
 #include <iostream>
 #include <fstream>
 
-#define PY3KWRAPPER_VERSION "0.9.2"
+#define PY3KWRAPPER_VERSION "0.9.3"
 
+const char* game_version_name(eGameVersion version);
 char* wchar_to_string(const wchar_t* wchar_message);
 char* time_now();
 void log_(const char* type, const char* message);
@@ -27,4 +28,5 @@ bool Py3kException();
 void Py3kInitialize();
 void Py3kFinalize();
 void Py3kReinitialize();
-void Py3kWrapper();
+void Py3kWrapperStart();
+void Py3kWrapperStop();

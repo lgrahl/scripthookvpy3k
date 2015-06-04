@@ -4,6 +4,21 @@ PyThreadState* pThreadState;
 PyObject* pExit = nullptr;
 std::ofstream logger("scripthookvpy3k.wrapper.log", std::ios_base::app | std::ios_base::out);
 
+const char* game_version_name(eGameVersion version) {
+	switch (version) {
+		case VER_1_0_335_2_STEAM:
+			return "1.0.335.2_STEAM";
+		case VER_1_0_335_2_NOSTEAM:
+			return "1.0.335.2_NOSTEAM";
+		case VER_1_0_350_1_STEAM:
+			return "1.0.350.1_STEAM";
+		case VER_1_0_350_2_NOSTEAM:
+			return "1.0.350.2_NOSTEAM";
+		default:
+			return "Unknown";
+	}
+}
+
 char* wchar_to_string(const wchar_t* wchar_message) {
 	size_t size = (wcslen(wchar_message) + 1) * 2;
 	char* message = new char[size];
@@ -303,37 +318,38 @@ void Py3kReinitialize() {
 	Py3kInitialize();
 }
 
-void Py3kWrapper() {
+void Py3kWrapperStart() {
 	log_debug("Py3kWrapper called");
 	log_debug((std::string("Version: ") + std::string(PY3KWRAPPER_VERSION)).c_str());
+	log_debug((std::string("Game Version: ") + std::string(game_version_name(getGameVersion()))).c_str());
 
 	// (Re)Initialise
 	Py3kReinitialize();
 
 	// Main loop
 	while (true) {
-		// Stop
 		if (IsKeyJustUp(VK_DELETE)) {
-			// Finalise
+			// Stop
 			log_debug("Enforcing stop");
 			Py3kFinalize();
-			continue;
-		}
-
-		// Restart
-		if (IsKeyJustUp(VK_F12)) {
-			// Reinitialise
+		} else if (IsKeyJustUp(VK_F12)) {
+			// Restart
 			log_debug("Reloading");
 			Py3kReinitialize();
-			continue;
+		} else {
+			// TODO: Handle tick
+			// log_debug("TODO: Handle tick");
+			// Py3kTick();
 		}
-
-		// TODO: Handle tick
-		// log_debug("TODO: Handle tick");
-		// Py3kTick();
 
 		// Yield
 		scriptWait(0);
 	}
 }
+
+void Py3kWrapperStop() {
+	// Finalise
+	Py3kFinalize();
+}
+
 
