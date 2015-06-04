@@ -93,7 +93,7 @@ def main():
         nonlocal last_namespace, function_found
         for _namespace, names in functions.items():
             for _name in names:
-                if _line.startswith('def {}'.format(_name)):
+                if _line.startswith('def {}('.format(_name)):
                     function_found = True
                     if _namespace != last_namespace:
                         # Insert class assignment at the end of a namespace

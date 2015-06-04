@@ -156,7 +156,7 @@ class _Player(_object):
         return _gta_native.SET_PLAYER_WANTED_LEVEL_NO_DROP(player, wantedLevel, p2)
 
     @staticmethod
-    def set_player_wanted_level(player, p1):
+    def set_player_wanted_level_now(player, p1):
         return _gta_native.SET_PLAYER_WANTED_LEVEL_NOW(player, p1)
 
     @staticmethod
@@ -1260,7 +1260,7 @@ class _Entity(_object):
         return _gta_native.ATTACH_ENTITY_TO_ENTITY(entity1, entity2, boneIndex, x, y, z, xRot, yRot, zRot, p9, isRel, ignoreUpVec, p12, unk, p14)
 
     @staticmethod
-    def attach_entity_to_entity(entity1, entity2, boneIndex, unknown2, x1, y1, z1, x2, y2, z2, xRot, yRot, zRot, forceToBreak, p14, p15, p16, p17, p18):
+    def attach_entity_to_entity_physically(entity1, entity2, boneIndex, unknown2, x1, y1, z1, x2, y2, z2, xRot, yRot, zRot, forceToBreak, p14, p15, p16, p17, p18):
         return _gta_native.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(entity1, entity2, boneIndex, unknown2, x1, y1, z1, x2, y2, z2, xRot, yRot, zRot, forceToBreak, p14, p15, p16, p17, p18)
 
     @staticmethod
@@ -1380,7 +1380,7 @@ class _Entity(_object):
         return _gta_native._0x621873ECE1178967(p0, p1, p2, p3, p4, p5, p6, p7)
 
     @staticmethod
-    def set_entity_coords(entity, X, Y, Z, p4, p5, p6):
+    def set_entity_coords_no_offset(entity, X, Y, Z, p4, p5, p6):
         return _gta_native.SET_ENTITY_COORDS_NO_OFFSET(entity, X, Y, Z, p4, p5, p6)
 
     @staticmethod
@@ -1636,7 +1636,7 @@ class _Ped(_object):
         return _gta_native.IS_PED_STOPPED(ped)
 
     @staticmethod
-    def is_ped_shooting(ped, x1, y1, z1, x2, y2, z2, p7, p8):
+    def is_ped_shooting_in_area(ped, x1, y1, z1, x2, y2, z2, p7, p8):
         return _gta_native.IS_PED_SHOOTING_IN_AREA(ped, x1, y1, z1, x2, y2, z2, p7, p8)
 
     @staticmethod
@@ -1692,7 +1692,7 @@ class _Ped(_object):
         return _gta_native.CREATE_RANDOM_PED(posX, posY, posZ)
 
     @staticmethod
-    def create_random_ped(vehicle, p1):
+    def create_random_ped_as_driver(vehicle, p1):
         return _gta_native.CREATE_RANDOM_PED_AS_DRIVER(vehicle, p1)
 
     @staticmethod
@@ -2252,7 +2252,7 @@ class _Ped(_object):
         return _gta_native.SET_GROUP_FORMATION(groupId, formationType)
 
     @staticmethod
-    def set_group_formation(groupId, p1, p2, p3):
+    def set_group_formation_spacing(groupId, p1, p2, p3):
         return _gta_native.SET_GROUP_FORMATION_SPACING(groupId, p1, p2, p3)
 
     @staticmethod
@@ -2715,18 +2715,10 @@ class _Ped(_object):
     def is_ped_ragdoll(ped):
         return _gta_native.IS_PED_RAGDOLL(ped)
 
-ped = _Ped
-
-
-class _Ai(_object):
     @staticmethod
-    def is_ped_running(ped):
+    def is_ped_running_ragdoll_task(ped):
         return _gta_native.IS_PED_RUNNING_RAGDOLL_TASK(ped)
 
-ai = _Ai
-
-
-class _Ped(_object):
     @staticmethod
     def set_ped_ragdoll_force_fall(ped):
         return _gta_native.SET_PED_RAGDOLL_FORCE_FALL(ped)
@@ -2739,18 +2731,10 @@ class _Ped(_object):
     def set_ped_can_ragdoll(ped, toggle):
         return _gta_native.SET_PED_CAN_RAGDOLL(ped, toggle)
 
-ped = _Ped
-
-
-class _Ai(_object):
     @staticmethod
-    def is_ped_running(ped):
+    def is_ped_running_mobile_phone_task(ped):
         return _gta_native.IS_PED_RUNNING_MOBILE_PHONE_TASK(ped)
 
-ai = _Ai
-
-
-class _Ped(_object):
     @staticmethod
     def _0xA3F3564A5B3646C0(p0):
         return _gta_native._0xA3F3564A5B3646C0(p0)
@@ -2940,7 +2924,7 @@ class _Ped(_object):
         return _gta_native.ADD_SCENARIO_BLOCKING_AREA(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9)
 
     @staticmethod
-    def remove_scenario_blocking_area():
+    def remove_scenario_blocking_areas():
         return _gta_native.REMOVE_SCENARIO_BLOCKING_AREAS()
 
     @staticmethod
@@ -3720,7 +3704,7 @@ class _Vehicle(_object):
         return _gta_native.SET_SCRIPT_VEHICLE_GENERATOR(vehicleGenerator, enabled)
 
     @staticmethod
-    def set_all_vehicle_generators_active(x1, y1, z1, x2, y2, z2, p6, p7):
+    def set_all_vehicle_generators_active_in_area(x1, y1, z1, x2, y2, z2, p6, p7):
         return _gta_native.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA(x1, y1, z1, x2, y2, z2, p6, p7)
 
     @staticmethod
@@ -4096,7 +4080,7 @@ class _Vehicle(_object):
         return _gta_native.REMOVE_VEHICLE_WINDOW(vehicle, windowIndex)
 
     @staticmethod
-    def roll_down_window(vehicle):
+    def roll_down_windows(vehicle):
         return _gta_native.ROLL_DOWN_WINDOWS(vehicle)
 
     @staticmethod
@@ -4196,7 +4180,7 @@ class _Vehicle(_object):
         return _gta_native.GET_NUMBER_OF_VEHICLE_NUMBER_PLATES()
 
     @staticmethod
-    def set_vehicle_number_plate_text(vehicle, plateIndex):
+    def set_vehicle_number_plate_text_index(vehicle, plateIndex):
         return _gta_native.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(vehicle, plateIndex)
 
     @staticmethod
@@ -4276,7 +4260,7 @@ class _Vehicle(_object):
         return _gta_native.GET_ROTATION_OF_VEHICLE_RECORDING_AT_TIME(p0, p1, p2)
 
     @staticmethod
-    def get_total_duration_of_vehicle_recording(p0):
+    def get_total_duration_of_vehicle_recording_id(p0):
         return _gta_native.GET_TOTAL_DURATION_OF_VEHICLE_RECORDING_ID(p0)
 
     @staticmethod
@@ -4368,7 +4352,7 @@ class _Vehicle(_object):
         return _gta_native._0x063AE2B2CC273588(p0, p1)
 
     @staticmethod
-    def explode_vehicle(p0, p1):
+    def explode_vehicle_in_cutscene(p0, p1):
         return _gta_native.EXPLODE_VEHICLE_IN_CUTSCENE(p0, p1)
 
     @staticmethod
@@ -4704,7 +4688,7 @@ class _Vehicle(_object):
         return _gta_native.IS_VEHICLE_A_CONVERTIBLE(vehicle, p1)
 
     @staticmethod
-    def is_vehicle_stopped(vehicle):
+    def is_vehicle_stopped_at_traffic_lights(vehicle):
         return _gta_native.IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS(vehicle)
 
     @staticmethod
@@ -4887,18 +4871,10 @@ class _Vehicle(_object):
     def is_vehicle_attached_to_tow_truck(vehicle, towTruck):
         return _gta_native.IS_VEHICLE_ATTACHED_TO_TOW_TRUCK(vehicle, towTruck)
 
-vehicle = _Vehicle
-
-
-class _Entity(_object):
     @staticmethod
-    def get_entity_attached_to(towTruck):
+    def get_entity_attached_to_tow_truck(towTruck):
         return _gta_native.GET_ENTITY_ATTACHED_TO_TOW_TRUCK(towTruck)
 
-entity = _Entity
-
-
-class _Vehicle(_object):
     @staticmethod
     def set_vehicle_automatically_attaches(p0, p1, p2):
         return _gta_native.SET_VEHICLE_AUTOMATICALLY_ATTACHES(p0, p1, p2)
@@ -5000,7 +4976,7 @@ class _Vehicle(_object):
         return _gta_native._0xF417C2502FFFED43(p0)
 
     @staticmethod
-    def get_vehicle_mod(p0):
+    def get_vehicle_model_max_braking(p0):
         return _gta_native.GET_VEHICLE_MODEL_MAX_BRAKING(p0)
 
     @staticmethod
@@ -5008,11 +4984,11 @@ class _Vehicle(_object):
         return _gta_native._0xBFBA3BA79CFF7EBF(p0)
 
     @staticmethod
-    def get_vehicle_mod(p0):
+    def get_vehicle_model_max_traction(p0):
         return _gta_native.GET_VEHICLE_MODEL_MAX_TRACTION(p0)
 
     @staticmethod
-    def get_vehicle_mod(p0):
+    def get_vehicle_model_acceleration(p0):
         return _gta_native.GET_VEHICLE_MODEL_ACCELERATION(p0)
 
     @staticmethod
@@ -5036,7 +5012,7 @@ class _Vehicle(_object):
         return _gta_native.GET_VEHICLE_CLASS_MAX_TRACTION(p0)
 
     @staticmethod
-    def get_vehicle_class(p0):
+    def get_vehicle_class_max_agility(p0):
         return _gta_native.GET_VEHICLE_CLASS_MAX_AGILITY(p0)
 
     @staticmethod
@@ -5044,7 +5020,7 @@ class _Vehicle(_object):
         return _gta_native.GET_VEHICLE_CLASS_MAX_ACCELERATION(p0)
 
     @staticmethod
-    def get_vehicle_class(p0):
+    def get_vehicle_class_max_braking(p0):
         return _gta_native.GET_VEHICLE_CLASS_MAX_BRAKING(p0)
 
     @staticmethod
@@ -5088,11 +5064,11 @@ class _Vehicle(_object):
         return _gta_native.SET_VEHICLE_MOD_KIT(vehicle, modKit)
 
     @staticmethod
-    def get_vehicle_mod(vehicle):
+    def get_vehicle_mod_kit(vehicle):
         return _gta_native.GET_VEHICLE_MOD_KIT(vehicle)
 
     @staticmethod
-    def get_vehicle_mod(vehicle):
+    def get_vehicle_mod_kit_type(vehicle):
         return _gta_native.GET_VEHICLE_MOD_KIT_TYPE(vehicle)
 
     @staticmethod
@@ -5116,11 +5092,11 @@ class _Vehicle(_object):
         return _gta_native.SET_VEHICLE_MOD_COLOR_2(vehicle, paintType, color)
 
     @staticmethod
-    def get_vehicle_mod(vehicle, paintType, color, p3):
+    def get_vehicle_mod_color_1(vehicle, paintType, color, p3):
         return _gta_native.GET_VEHICLE_MOD_COLOR_1(vehicle, paintType, color, p3)
 
     @staticmethod
-    def get_vehicle_mod(vehicle, paintType, color):
+    def get_vehicle_mod_color_2(vehicle, paintType, color):
         return _gta_native.GET_VEHICLE_MOD_COLOR_2(vehicle, paintType, color)
 
     @staticmethod
@@ -5144,7 +5120,7 @@ class _Vehicle(_object):
         return _gta_native.GET_VEHICLE_MOD(vehicle, modType)
 
     @staticmethod
-    def get_vehicle_mod(vehicle, modType):
+    def get_vehicle_mod_variation(vehicle, modType):
         return _gta_native.GET_VEHICLE_MOD_VARIATION(vehicle, modType)
 
     @staticmethod
@@ -5176,7 +5152,7 @@ class _Vehicle(_object):
         return _gta_native.GET_LIVERY_NAME(p0, p1)
 
     @staticmethod
-    def get_vehicle_mod(p0, p1, p2):
+    def get_vehicle_mod_modifier_value(p0, p1, p2):
         return _gta_native.GET_VEHICLE_MOD_MODIFIER_VALUE(p0, p1, p2)
 
     @staticmethod
@@ -5492,7 +5468,7 @@ class _Vehicle(_object):
         return _gta_native._0x7BEB0C7A235F6F3B(p0)
 
     @staticmethod
-    def get_closest_vehicle(p0):
+    def get_closest_vehicle_turning_bloodspray(p0):
         return _gta_native.GET_CLOSEST_VEHICLE_TURNING_BLOODSPRAY(p0)
 
     @staticmethod
@@ -5524,7 +5500,7 @@ class _Vehicle(_object):
         return _gta_native.GET_VEHICLE_CLASS(vehicle)
 
     @staticmethod
-    def get_vehicle_class(p0):
+    def get_vehicle_class_from_name(p0):
         return _gta_native.GET_VEHICLE_CLASS_FROM_NAME(p0)
 
     @staticmethod
@@ -5668,7 +5644,7 @@ class _Object(_object):
         return _gta_native.CREATE_OBJECT(modelHash, x, y, z, p4, p5, dynamic)
 
     @staticmethod
-    def create_object(objectHash, posX, posY, posZ, p4, p5, p6):
+    def create_object_no_offset(objectHash, posX, posY, posZ, p4, p5, p6):
         return _gta_native.CREATE_OBJECT_NO_OFFSET(objectHash, posX, posY, posZ, p4, p5, p6)
 
     @staticmethod
@@ -5928,7 +5904,7 @@ class _Object(_object):
         return _gta_native.CREATE_PICKUP(typeHash, posX, posY, posZ, p4, amount, p6, customModelHash)
 
     @staticmethod
-    def create_pickup(typeHash, posX, posY, posZ, rotX, rotY, rotZ, p7, amount, p9, p10, customModelHash):
+    def create_pickup_rotate(typeHash, posX, posY, posZ, rotX, rotY, rotZ, p7, amount, p9, p10, customModelHash):
         return _gta_native.CREATE_PICKUP_ROTATE(typeHash, posX, posY, posZ, rotX, rotY, rotZ, p7, amount, p9, p10, customModelHash)
 
     @staticmethod
@@ -6124,7 +6100,7 @@ class _Ai(_object):
         return _gta_native.TASK_PARACHUTE(ped, p1)
 
     @staticmethod
-    def task_parachute(p0, p1, p2, p3):
+    def task_parachute_to_target(p0, p1, p2, p3):
         return _gta_native.TASK_PARACHUTE_TO_TARGET(p0, p1, p2, p3)
 
     @staticmethod
@@ -6160,7 +6136,7 @@ class _Ai(_object):
         return _gta_native.TASK_GO_STRAIGHT_TO_COORD(ped, x, y, z, speed, timeout, targetHeading, distanceToSlide)
 
     @staticmethod
-    def task_go_straight_to_coord(p0, p1, p2, p3, p4, p5, p6):
+    def task_go_straight_to_coord_relative_to_entity(p0, p1, p2, p3, p4, p5, p6):
         return _gta_native.TASK_GO_STRAIGHT_TO_COORD_RELATIVE_TO_ENTITY(p0, p1, p2, p3, p4, p5, p6)
 
     @staticmethod
@@ -6224,7 +6200,7 @@ class _Ai(_object):
         return _gta_native.TASK_FOLLOW_NAV_MESH_TO_COORD(ped, x, y, z, speed, timeout, zeroFloat, zeroInt, zeroFloat2)
 
     @staticmethod
-    def task_follow_nav_mesh_to_coord(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11):
+    def task_follow_nav_mesh_to_coord_advanced(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11):
         return _gta_native.TASK_FOLLOW_NAV_MESH_TO_COORD_ADVANCED(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11)
 
     @staticmethod
@@ -6276,7 +6252,7 @@ class _Ai(_object):
         return _gta_native.TASK_GO_TO_COORD_ANY_MEANS_EXTRA_PARAMS(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11)
 
     @staticmethod
-    def task_go_to_coord_any_means_extra_params(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12):
+    def task_go_to_coord_any_means_extra_params_with_cruise_speed(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12):
         return _gta_native.TASK_GO_TO_COORD_ANY_MEANS_EXTRA_PARAMS_WITH_CRUISE_SPEED(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12)
 
     @staticmethod
@@ -6548,7 +6524,7 @@ class _Ai(_object):
         return _gta_native.TASK_USE_MOBILE_PHONE(p0, p1)
 
     @staticmethod
-    def task_use_mobile_phone(p0, p1):
+    def task_use_mobile_phone_timed(p0, p1):
         return _gta_native.TASK_USE_MOBILE_PHONE_TIMED(p0, p1)
 
     @staticmethod
@@ -6568,15 +6544,15 @@ class _Ai(_object):
         return _gta_native.TASK_CLIMB(p0, p1)
 
     @staticmethod
-    def task_climb(p0, p1):
+    def task_climb_ladder(p0, p1):
         return _gta_native.TASK_CLIMB_LADDER(p0, p1)
 
     @staticmethod
-    def clear_ped_tasks(ped):
+    def clear_ped_tasks_immediately(ped):
         return _gta_native.CLEAR_PED_TASKS_IMMEDIATELY(ped)
 
     @staticmethod
-    def task_perform_sequence(p0, p1, p2, p3):
+    def task_perform_sequence_from_progress(p0, p1, p2, p3):
         return _gta_native.TASK_PERFORM_SEQUENCE_FROM_PROGRESS(p0, p1, p2, p3)
 
     @staticmethod
@@ -6720,7 +6696,7 @@ class _Ai(_object):
         return _gta_native.TASK_USE_NEAREST_SCENARIO_TO_COORD(p0, p1, p2, p3, p4, p5)
 
     @staticmethod
-    def task_use_nearest_scenario_to_coord(p0, p1, p2, p3, p4, p5):
+    def task_use_nearest_scenario_to_coord_warp(p0, p1, p2, p3, p4, p5):
         return _gta_native.TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP(p0, p1, p2, p3, p4, p5)
 
     @staticmethod
@@ -7164,7 +7140,7 @@ class _Ai(_object):
         return _gta_native.TASK_ARREST_PED(ped, target)
 
     @staticmethod
-    def is_ped_running(ped):
+    def is_ped_running_arrest_task(ped):
         return _gta_native.IS_PED_RUNNING_ARREST_TASK(ped)
 
     @staticmethod
@@ -7284,7 +7260,7 @@ class _Gameplay(_object):
         return _gta_native.SET_WEATHER_TYPE_PERSIST(weatherType)
 
     @staticmethod
-    def set_weather_type_now(weatherType):
+    def set_weather_type_now_persist(weatherType):
         return _gta_native.SET_WEATHER_TYPE_NOW_PERSIST(weatherType)
 
     @staticmethod
@@ -7544,19 +7520,19 @@ class _Gameplay(_object):
         return _gta_native.CLEAR_ANGLED_AREA_OF_VEHICLES(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11)
 
     @staticmethod
-    def clear_area(p0, p1, p2, p3, p4):
+    def clear_area_of_objects(p0, p1, p2, p3, p4):
         return _gta_native.CLEAR_AREA_OF_OBJECTS(p0, p1, p2, p3, p4)
 
     @staticmethod
-    def clear_area(x, y, z, radius, b):
+    def clear_area_of_peds(x, y, z, radius, b):
         return _gta_native.CLEAR_AREA_OF_PEDS(x, y, z, radius, b)
 
     @staticmethod
-    def clear_area(p0, p1, p2, p3, p4):
+    def clear_area_of_cops(p0, p1, p2, p3, p4):
         return _gta_native.CLEAR_AREA_OF_COPS(p0, p1, p2, p3, p4)
 
     @staticmethod
-    def clear_area(p0, p1, p2, p3, p4):
+    def clear_area_of_projectiles(p0, p1, p2, p3, p4):
         return _gta_native.CLEAR_AREA_OF_PROJECTILES(p0, p1, p2, p3, p4)
 
     @staticmethod
@@ -7880,7 +7856,7 @@ class _Gameplay(_object):
         return _gta_native.STRING_TO_INT(string, outInteger)
 
     @staticmethod
-    def set_bit(p0, p1, p2, p3):
+    def set_bits_in_range(p0, p1, p2, p3):
         return _gta_native.SET_BITS_IN_RANGE(p0, p1, p2, p3)
 
     @staticmethod
@@ -8395,18 +8371,10 @@ class _Audio(_object):
     def request_ambient_audio_bank(p0, p1):
         return _gta_native.REQUEST_AMBIENT_AUDIO_BANK(p0, p1)
 
-audio = _Audio
-
-
-class _Script(_object):
     @staticmethod
-    def request_script(p0, p1):
+    def request_script_audio_bank(p0, p1):
         return _gta_native.REQUEST_SCRIPT_AUDIO_BANK(p0, p1)
 
-script = _Script
-
-
-class _Audio(_object):
     @staticmethod
     def hint_ambient_audio_bank(p0, p1):
         return _gta_native.HINT_AMBIENT_AUDIO_BANK(p0, p1)
@@ -8448,7 +8416,7 @@ class _Audio(_object):
         return _gta_native.PLAY_SOUND(p0, p1, p2, p3, p4, p5)
 
     @staticmethod
-    def play_sound(p0, p1, p2, p3):
+    def play_sound_frontend(p0, p1, p2, p3):
         return _gta_native.PLAY_SOUND_FRONTEND(p0, p1, p2, p3)
 
     @staticmethod
@@ -8456,11 +8424,11 @@ class _Audio(_object):
         return _gta_native._0xCADA5A0D0702381E(p0, p1)
 
     @staticmethod
-    def play_sound(p0, p1, entity, p3, p4, p5):
+    def play_sound_from_entity(p0, p1, entity, p3, p4, p5):
         return _gta_native.PLAY_SOUND_FROM_ENTITY(p0, p1, entity, p3, p4, p5)
 
     @staticmethod
-    def play_sound(p0, p1, p2, p3, p4, p5, p6, p7, p8):
+    def play_sound_from_coord(p0, p1, p2, p3, p4, p5, p6, p7, p8):
         return _gta_native.PLAY_SOUND_FROM_COORD(p0, p1, p2, p3, p4, p5, p6, p7, p8)
 
     @staticmethod
@@ -8972,7 +8940,7 @@ class _Audio(_object):
         return _gta_native.STOP_AUDIO_SCENE(p0)
 
     @staticmethod
-    def stop_audio_scene():
+    def stop_audio_scenes():
         return _gta_native.STOP_AUDIO_SCENES()
 
     @staticmethod
@@ -9096,7 +9064,7 @@ class _Audio(_object):
         return _gta_native.PREPARE_SYNCHRONIZED_AUDIO_EVENT(p0, p1)
 
     @staticmethod
-    def prepare_synchronized_audio_event(p0, p1):
+    def prepare_synchronized_audio_event_for_scene(p0, p1):
         return _gta_native.PREPARE_SYNCHRONIZED_AUDIO_EVENT_FOR_SCENE(p0, p1)
 
     @staticmethod
@@ -9192,7 +9160,7 @@ class _Cutscene(_object):
         return _gta_native.START_CUTSCENE(p0)
 
     @staticmethod
-    def start_cutscene(p0, p1, p2, p3):
+    def start_cutscene_at_coords(p0, p1, p2, p3):
         return _gta_native.START_CUTSCENE_AT_COORDS(p0, p1, p2, p3)
 
     @staticmethod
@@ -9200,7 +9168,7 @@ class _Cutscene(_object):
         return _gta_native.STOP_CUTSCENE(p0)
 
     @staticmethod
-    def stop_cutscene():
+    def stop_cutscene_immediately():
         return _gta_native.STOP_CUTSCENE_IMMEDIATELY()
 
     @staticmethod
@@ -9480,15 +9448,15 @@ class _Cam(_object):
         return _gta_native.CREATE_CAM(camName, p1)
 
     @staticmethod
-    def create_cam(camName, posX, posY, posZ, rotX, rotY, rotZ, fov, p8, p9):
+    def create_cam_with_params(camName, posX, posY, posZ, rotX, rotY, rotZ, fov, p8, p9):
         return _gta_native.CREATE_CAM_WITH_PARAMS(camName, posX, posY, posZ, rotX, rotY, rotZ, fov, p8, p9)
 
     @staticmethod
-    def create_cam(p0, p1):
+    def create_camera(p0, p1):
         return _gta_native.CREATE_CAMERA(p0, p1)
 
     @staticmethod
-    def create_cam(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9):
+    def create_camera_with_params(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9):
         return _gta_native.CREATE_CAMERA_WITH_PARAMS(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9)
 
     @staticmethod
@@ -9732,7 +9700,7 @@ class _Cam(_object):
         return _gta_native.IS_CAM_SPLINE_PAUSED(p0)
 
     @staticmethod
-    def set_cam_active(camTo, camFrom, duration, easeLocation, easeRotation):
+    def set_cam_active_with_interp(camTo, camFrom, duration, easeLocation, easeRotation):
         return _gta_native.SET_CAM_ACTIVE_WITH_INTERP(camTo, camFrom, duration, easeLocation, easeRotation)
 
     @staticmethod
@@ -10275,18 +10243,10 @@ class _Cam(_object):
     def _0x1F2300CB7FA7B7F6():
         return _gta_native._0x1F2300CB7FA7B7F6()
 
-cam = _Cam
-
-
-class _Cutscene(_object):
     @staticmethod
-    def stop_cutscene():
+    def stop_cutscene_cam_shaking():
         return _gta_native.STOP_CUTSCENE_CAM_SHAKING()
 
-cutscene = _Cutscene
-
-
-class _Cam(_object):
     @staticmethod
     def _0x12DED8CA53D47EA5(p0):
         return _gta_native._0x12DED8CA53D47EA5(p0)
@@ -10400,7 +10360,7 @@ class _Weapon(_object):
         return _gta_native.SET_PED_INFINITE_AMMO(ped, toggle, weaponHash)
 
     @staticmethod
-    def set_ped_infinite_ammo(ped, toggle):
+    def set_ped_infinite_ammo_clip(ped, toggle):
         return _gta_native.SET_PED_INFINITE_AMMO_CLIP(ped, toggle)
 
     @staticmethod
@@ -10428,7 +10388,7 @@ class _Weapon(_object):
         return _gta_native.SET_PED_CURRENT_WEAPON_VISIBLE(p0, p1, p2, p3)
 
     @staticmethod
-    def set_ped_drops_weapon(p0, p1):
+    def set_ped_drops_weapons_when_dead(p0, p1):
         return _gta_native.SET_PED_DROPS_WEAPONS_WHEN_DEAD(p0, p1)
 
     @staticmethod
@@ -10472,7 +10432,7 @@ class _Weapon(_object):
         return _gta_native.GET_MAX_AMMO(ped, weaponHash, ammo)
 
     @staticmethod
-    def set_ped_ammo(p0, p1, p2):
+    def set_ped_ammo_by_type(p0, p1, p2):
         return _gta_native.SET_PED_AMMO_BY_TYPE(p0, p1, p2)
 
     @staticmethod
@@ -10480,7 +10440,7 @@ class _Weapon(_object):
         return _gta_native.GET_PED_AMMO_BY_TYPE(p0, p1)
 
     @staticmethod
-    def set_ped_ammo(p0, p1):
+    def set_ped_ammo_to_drop(p0, p1):
         return _gta_native.SET_PED_AMMO_TO_DROP(p0, p1)
 
     @staticmethod
@@ -10536,7 +10496,7 @@ class _Weapon(_object):
         return _gta_native.REMOVE_WEAPON_COMPONENT_FROM_PED(ped, weaponHash, componentHash)
 
     @staticmethod
-    def has_ped_got_weapon(ped, weaponHash, componentHash):
+    def has_ped_got_weapon_component(ped, weaponHash, componentHash):
         return _gta_native.HAS_PED_GOT_WEAPON_COMPONENT(ped, weaponHash, componentHash)
 
     @staticmethod
@@ -11580,11 +11540,11 @@ class _Ui(_object):
         return _gta_native._0x761B77454205A61D(p0, p1)
 
     @staticmethod
-    def _ADD_TEXT_COMPONENT_STRING(text):
+    def _ADD_TEXT_COMPONENT_STRING2(text):
         return _gta_native._ADD_TEXT_COMPONENT_STRING2(text)
 
     @staticmethod
-    def _ADD_TEXT_COMPONENT_STRING(text):
+    def _ADD_TEXT_COMPONENT_STRING3(text):
         return _gta_native._ADD_TEXT_COMPONENT_STRING3(text)
 
     @staticmethod
@@ -11596,11 +11556,11 @@ class _Ui(_object):
         return _gta_native._GET_TEXT_SUBSTRING(text, position, length)
 
     @staticmethod
-    def _GET_TEXT_SUBSTRING(text, position, length, maxLength):
+    def _GET_TEXT_SUBSTRING_SAFE(text, position, length, maxLength):
         return _gta_native._GET_TEXT_SUBSTRING_SAFE(text, position, length, maxLength)
 
     @staticmethod
-    def _GET_TEXT_SUBSTRING(text, startPosition, endPosition):
+    def _GET_TEXT_SUBSTRING_SLICE(text, startPosition, endPosition):
         return _gta_native._GET_TEXT_SUBSTRING_SLICE(text, startPosition, endPosition)
 
     @staticmethod
@@ -12072,7 +12032,7 @@ class _Ui(_object):
         return _gta_native.SET_BLIP_FLASHES(p0, p1)
 
     @staticmethod
-    def set_blip_flashes(blip, p1):
+    def set_blip_flashes_alternate(blip, p1):
         return _gta_native.SET_BLIP_FLASHES_ALTERNATE(blip, p1)
 
     @staticmethod
@@ -12956,7 +12916,7 @@ class _Graphics(_object):
         return _gta_native.DRAW_DEBUG_LINE(x1, y1, z1, x2, y2, z2, r, g, b, alpha)
 
     @staticmethod
-    def draw_debug_line(x1, y1, z1, x2, y2, z2, r1, g1, b1, r2, g2, b2, alpha1, alpha2):
+    def draw_debug_line_with_two_colours(x1, y1, z1, x2, y2, z2, r1, g1, b1, r2, g2, b2, alpha1, alpha2):
         return _gta_native.DRAW_DEBUG_LINE_WITH_TWO_COLOURS(x1, y1, z1, x2, y2, z2, r1, g1, b1, r2, g2, b2, alpha1, alpha2)
 
     @staticmethod
@@ -13700,7 +13660,7 @@ class _Graphics(_object):
         return _gta_native.FADE_DECALS_IN_RANGE(p0, p1, p2, p3, p4)
 
     @staticmethod
-    def remove_decal(p0, p1, p2, p3):
+    def remove_decals_in_range(p0, p1, p2, p3):
         return _gta_native.REMOVE_DECALS_IN_RANGE(p0, p1, p2, p3)
 
     @staticmethod
@@ -13708,11 +13668,11 @@ class _Graphics(_object):
         return _gta_native.REMOVE_DECALS_FROM_OBJECT(p0)
 
     @staticmethod
-    def remove_decals_from_object(p0, p1, p2, p3):
+    def remove_decals_from_object_facing(p0, p1, p2, p3):
         return _gta_native.REMOVE_DECALS_FROM_OBJECT_FACING(p0, p1, p2, p3)
 
     @staticmethod
-    def remove_decal(p0):
+    def remove_decals_from_vehicle(p0):
         return _gta_native.REMOVE_DECALS_FROM_VEHICLE(p0)
 
     @staticmethod
@@ -13980,7 +13940,7 @@ class _Graphics(_object):
         return _gta_native._0xB9449845F73F5E9C(functionName)
 
     @staticmethod
-    def _POP_SCALEFORM_MOVIE_FUNCTION():
+    def _POP_SCALEFORM_MOVIE_FUNCTION_VOID():
         return _gta_native._POP_SCALEFORM_MOVIE_FUNCTION_VOID()
 
     @staticmethod
@@ -14008,7 +13968,7 @@ class _Graphics(_object):
         return _gta_native._PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_FLOAT(value)
 
     @staticmethod
-    def _PUSH_SCALEFORM_MOVIE_FUNCTION(value):
+    def _PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_BOOL(value):
         return _gta_native._PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_BOOL(value)
 
     @staticmethod
@@ -14176,7 +14136,7 @@ class _Stats(_object):
         return _gta_native._0x5688585E6D563CD8(p0)
 
     @staticmethod
-    def stat_load(p0):
+    def stat_load_pending(p0):
         return _gta_native.STAT_LOAD_PENDING(p0)
 
     @staticmethod
@@ -14376,7 +14336,7 @@ class _Stats(_object):
         return _gta_native._0xD16C2AD6B8E32854(p0, p1, p2, p3)
 
     @staticmethod
-    def stat_get_bool(p0, p1, p2):
+    def stat_get_bool_masked(p0, p1, p2):
         return _gta_native.STAT_GET_BOOL_MASKED(p0, p1, p2)
 
     @staticmethod
@@ -15064,7 +15024,7 @@ class _Pathfind(_object):
         return _gta_native.GET_CLOSEST_MAJOR_VEHICLE_NODE(p0, p1, p2, p3, p4, p5)
 
     @staticmethod
-    def get_closest_vehicle_node(p0, p1, p2, p3, p4, p5, p6, p7):
+    def get_closest_vehicle_node_with_heading(p0, p1, p2, p3, p4, p5, p6, p7):
         return _gta_native.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING(p0, p1, p2, p3, p4, p5, p6, p7)
 
     @staticmethod
@@ -15072,19 +15032,19 @@ class _Pathfind(_object):
         return _gta_native.GET_NTH_CLOSEST_VEHICLE_NODE(x, y, z, nthClosest, outPosition, unknown1, unknown2, unknown3)
 
     @staticmethod
-    def get_nth_closest_vehicle_node(p0, p1, p2, p3, p4, p5, p6):
+    def get_nth_closest_vehicle_node_id(p0, p1, p2, p3, p4, p5, p6):
         return _gta_native.GET_NTH_CLOSEST_VEHICLE_NODE_ID(p0, p1, p2, p3, p4, p5, p6)
 
     @staticmethod
-    def get_nth_closest_vehicle_node(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9):
+    def get_nth_closest_vehicle_node_with_heading(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9):
         return _gta_native.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9)
 
     @staticmethod
-    def get_nth_closest_vehicle_node(p0, p1, p2, p3, p4, p5, p6, p7, p8):
+    def get_nth_closest_vehicle_node_id_with_heading(p0, p1, p2, p3, p4, p5, p6, p7, p8):
         return _gta_native.GET_NTH_CLOSEST_VEHICLE_NODE_ID_WITH_HEADING(p0, p1, p2, p3, p4, p5, p6, p7, p8)
 
     @staticmethod
-    def get_nth_closest_vehicle_node(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11):
+    def get_nth_closest_vehicle_node_favour_direction(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11):
         return _gta_native.GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11)
 
     @staticmethod
@@ -15972,7 +15932,7 @@ class _Water(_object):
         return _gta_native.GET_WATER_HEIGHT(x, y, z, height)
 
     @staticmethod
-    def get_water_height(x, y, z, height):
+    def get_water_height_no_waves(x, y, z, height):
         return _gta_native.GET_WATER_HEIGHT_NO_WAVES(x, y, z, height)
 
     @staticmethod
@@ -16544,7 +16504,7 @@ class _Network(_object):
         return _gta_native.NETWORK_CLEAR_TRANSITION_CREATOR_HANDLE()
 
     @staticmethod
-    def network_invite_gamers(p0, p1):
+    def network_invite_gamers_to_transition(p0, p1):
         return _gta_native.NETWORK_INVITE_GAMERS_TO_TRANSITION(p0, p1)
 
     @staticmethod
@@ -16608,7 +16568,7 @@ class _Network(_object):
         return _gta_native.NETWORK_IS_TRANSITION_HOST()
 
     @staticmethod
-    def network_is_transition_host(p0):
+    def network_is_transition_host_from_handle(p0):
         return _gta_native.NETWORK_IS_TRANSITION_HOST_FROM_HANDLE(p0)
 
     @staticmethod
@@ -16796,7 +16756,7 @@ class _Network(_object):
         return _gta_native.FILLOUT_PM_PLAYER_LIST(p0, p1, p2)
 
     @staticmethod
-    def fillout_pm_player_list(p0, p1, p2, p3):
+    def fillout_pm_player_list_with_names(p0, p1, p2, p3):
         return _gta_native.FILLOUT_PM_PLAYER_LIST_WITH_NAMES(p0, p1, p2, p3)
 
     @staticmethod
@@ -17004,7 +16964,7 @@ class _Network(_object):
         return _gta_native.PARTICIPANT_ID()
 
     @staticmethod
-    def participant_id():
+    def participant_id_to_int():
         return _gta_native.PARTICIPANT_ID_TO_INT()
 
     @staticmethod
@@ -17512,7 +17472,7 @@ class _Network(_object):
         return _gta_native.NETWORK_CLAN_DOWNLOAD_MEMBERSHIP(p0)
 
     @staticmethod
-    def network_clan_download_membership(p0):
+    def network_clan_download_membership_pending(p0):
         return _gta_native.NETWORK_CLAN_DOWNLOAD_MEMBERSHIP_PENDING(p0)
 
     @staticmethod
@@ -17659,18 +17619,10 @@ class _Network(_object):
     def is_player_in_cutscene(p0):
         return _gta_native.IS_PLAYER_IN_CUTSCENE(p0)
 
-network = _Network
-
-
-class _Entity(_object):
     @staticmethod
-    def set_entity_visible(p0, p1, p2):
+    def set_entity_visible_in_cutscene(p0, p1, p2):
         return _gta_native.SET_ENTITY_VISIBLE_IN_CUTSCENE(p0, p1, p2)
 
-entity = _Entity
-
-
-class _Network(_object):
     @staticmethod
     def set_entity_locally_invisible(p0):
         return _gta_native.SET_ENTITY_LOCALLY_INVISIBLE(p0)
@@ -19152,7 +19104,7 @@ class _System(_object):
         return _gta_native._START_NEW_SCRIPT_HASH(scriptHash, stackSize)
 
     @staticmethod
-    def _START_NEW_SCRIPT_HASH(scriptHash, args, argCount, stackSize):
+    def _START_NEW_SCRIPT_HASH_WITH_ARGS(scriptHash, args, argCount, stackSize):
         return _gta_native._START_NEW_SCRIPT_HASH_WITH_ARGS(scriptHash, args, argCount, stackSize)
 
     @staticmethod
@@ -19204,7 +19156,7 @@ class _System(_object):
         return _gta_native.VDIST(x1, y1, z1, x2, y2, z2)
 
     @staticmethod
-    def vdist(x1, y1, z1, x2, y2, z2):
+    def vdist2(x1, y1, z1, x2, y2, z2):
         return _gta_native.VDIST2(x1, y1, z1, x2, y2, z2)
 
     @staticmethod
