@@ -2,7 +2,8 @@
 
 PyThreadState* pThreadState;
 PyObject* pExit = nullptr;
-std::ofstream logger("scripthookvpy3k.wrapper.log", std::ios_base::app | std::ios_base::out);
+PyObject* pTick = nullptr;
+std::ofstream logger("scripthookvpy3k.wrapper.log", std::ios_base::trunc | std::ios_base::out);
 
 const char* game_version_name(eGameVersion version) {
 	switch (version) {
@@ -161,6 +162,28 @@ bool Py3kException(PyObject* obj) {
 	}
 }
 
+void Py3kTick() {
+	if (Py_IsInitialized()) {
+		PyObject* pResult;
+
+		// Acquire GIL
+		PyEval_RestoreThread(pThreadState);
+
+		// Call tick function
+		if (PyCallable_Check(pTick)) {
+			pResult = PyObject_CallObject(pTick, NULL);
+			if (!Py3kException(pResult)) {
+				Py_DECREF(pResult);
+			}
+		} else {
+			log_error("Tick function is not callable");
+		}
+
+		// Release GIL
+		pThreadState = PyEval_SaveThread();
+	}
+}
+
 void Py3kInitialize() {
 	log_debug("Py3kInitialize called");
 
@@ -250,12 +273,14 @@ void Py3kInitialize() {
 		pDict = PyModule_GetDict(pModule);
 		Py_DECREF(pModule);
 		if (Py3kException(pDict)) { Py_Finalize(); return; }
-		// Get init and exit functions (borrowed)
+		// Get init, exit and tick functions (borrowed)
 		log_debug("Referencing functions");
 		pInit = PyDict_GetItemString(pDict, "_init");
 		if (Py3kException(pInit)) { Py_Finalize(); return; }
 		pExit = PyDict_GetItemString(pDict, "_exit");
 		if (Py3kException(pExit)) { Py_Finalize(); return; }
+		pTick = PyDict_GetItemString(pDict, "_tick");
+		if (Py3kException(pTick)) { Py_Finalize(); return; }
 
 		// Call init function
 		if (PyCallable_Check(pInit)) {
@@ -309,6 +334,7 @@ void Py3kFinalize() {
 
 		// Reset vars
 		pExit = nullptr;
+		pTick = nullptr;
 		pThreadState = nullptr;
 	}
 }
@@ -337,9 +363,8 @@ void Py3kWrapperStart() {
 			log_debug("Reloading");
 			Py3kReinitialize();
 		} else {
-			// TODO: Handle tick
-			// log_debug("TODO: Handle tick");
-			// Py3kTick();
+			// Tick
+			Py3kTick();
 		}
 
 		// Yield

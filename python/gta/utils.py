@@ -102,7 +102,7 @@ def setup_logging(console):
     loggers = (
         ('gta', logging.DEBUG),
         ('py.warnings', logging.WARNING),
-        ('asyncio', logging.DEBUG),
+        ('asyncio', logging.INFO),
         ('pip', logging.WARNING)
     )
     for name, level in loggers:

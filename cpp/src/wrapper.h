@@ -13,7 +13,7 @@
 #include <iostream>
 #include <fstream>
 
-#define PY3KWRAPPER_VERSION "0.9.3"
+#define PY3KWRAPPER_VERSION "0.9.4"
 
 const char* game_version_name(eGameVersion version);
 char* wchar_to_string(const wchar_t* wchar_message);
@@ -23,8 +23,9 @@ void log_debug(const char* message);
 void log_error(const char* message);
 void log_exception(const char* message);
 std::string Py3kStr(PyObject* obj);
-bool Py3kException(PyObject* obj);
 bool Py3kException();
+bool Py3kException(PyObject* obj);
+void Py3kTick();
 void Py3kInitialize();
 void Py3kFinalize();
 void Py3kReinitialize();

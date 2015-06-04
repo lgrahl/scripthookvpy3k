@@ -18,7 +18,7 @@ from gta.exceptions import *
 
 __author__ = 'Lennart Grahl <lennart.grahl@gmail.com>'
 __status__ = 'Development'
-__version__ = '0.9.7'
+__version__ = '0.9.8'
 __all__ = exceptions.__all__
 
 
@@ -26,12 +26,15 @@ def _reset_globals():
     """
     Set global attributes.
     """
-    global _utils, _thread, _loop, _tasks, _names
+    global _utils, _thread, _loop, _tasks, _names, _tick_future
     _utils = None
     _thread = None
     _loop = None
     _tasks = []
     _names = []
+    if _tick_future is not None:
+        _tick_future.cancel()
+    _tick_future = asyncio.Future()
 
 
 def _init(console=False):
@@ -103,6 +106,19 @@ def _start(console):
 
     logger.info('Complete')
 
+
+def _tick():
+    """
+    Apply a game tick.
+    """
+    if _loop is not None and not _loop.is_closed():
+        def __tick():
+            global _tick_future
+            _utils.get_logger().debug('SET RESULT ON {}', id(_tick_future))
+            _tick_future.set_result(None)
+            _tick_future = asyncio.Future()
+            _utils.get_logger().debug('NEW FUTURE {}', id(_tick_future))
+        _loop.call_soon_threadsafe(__tick)
 
 def _exit():
     """
@@ -322,3 +338,20 @@ def _script_done(task, name=None):
                               ''.format(name)) from exc
     except ScriptError as exc:
         logger.exception(exc)
+
+
+@asyncio.coroutine
+def tick(count=1):
+    """
+    Wait for one or more game ticks.
+
+    Arguments:
+        - `count`: The amount of game ticks to wait for.
+    """
+    ticks = 0
+    while count > ticks:
+        _utils.get_logger().debug('WAITING FOR {}', id(_tick_future))
+        yield from asyncio.shield(_tick_future)
+        ticks += 1
+        _utils.get_logger().debug('WAITING DONE {}', ticks)
+    return
