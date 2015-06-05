@@ -324,8 +324,8 @@ void Py3kInitialize() {
 		if (pExit == nullptr) { log_error("'gta._exit' does not exist"); Py_Finalize(); return; }
 		pTick = PyDict_GetItemString(pDict, "_tick");
 		if (pTick == nullptr) { log_error("'gta._tick' does not exist"); Py_Finalize(); return; }
-		pKeyEvent = PyDict_GetItemString(pDict, "_key_event");
-		if (pKeyEvent == nullptr) { log_error("'gta._key_event' does not exist"); Py_Finalize(); return; }
+		pKeyEvent = PyDict_GetItemString(pDict, "_key");
+		if (pKeyEvent == nullptr) { log_error("'gta._key' does not exist"); Py_Finalize(); return; }
 
 		// Call init function
 		if (PyCallable_Check(pInit)) {

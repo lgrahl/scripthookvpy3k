@@ -18,7 +18,7 @@ from gta.exceptions import *
 
 __author__ = 'Lennart Grahl <lennart.grahl@gmail.com>'
 __status__ = 'Development'
-__version__ = '0.9.11'
+__version__ = '0.9.12'
 __all__ = exceptions.__all__
 
 
@@ -113,7 +113,7 @@ def _start(console):
 
 def _tick():
     """
-    Apply a game tick.
+    Handle a game tick event.
     """
     if _loop is not None and not _loop.is_closed():
         def __tick():
@@ -125,7 +125,7 @@ def _tick():
         _loop.call_soon_threadsafe(__tick)
 
 
-def _key_event(code, down, **modifiers):
+def _key(code, down, **modifiers):
     """
     Handle a key event.
 
@@ -362,7 +362,7 @@ def _script_done(task, name=None):
 
 
 @asyncio.coroutine
-def tick(count=1):
+def _tick_event(count=1):
     """
     Wait for one or more game ticks.
 
@@ -383,6 +383,6 @@ def tick(count=1):
 
 
 @asyncio.coroutine
-def _key(code=None, modifiers=None):
+def _key_event(code=None, modifiers=None):
     if modifiers is None:
         modifiers = {}

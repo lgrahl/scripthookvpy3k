@@ -5,6 +5,6 @@ __all__ = ('tick', 'key')
 
 # Import wrapper events into this package
 # noinspection PyProtectedMember
-tick = gta._tick
+tick = gta._tick_event
 # noinspection PyProtectedMember
-key = gta._key
+key = gta._key_event

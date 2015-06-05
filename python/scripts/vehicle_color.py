@@ -8,7 +8,7 @@ from gta.events import ped
 
 __author__ = 'Lennart Grahl <lennart.grahl@gmail.com>'
 __status__ = 'Production'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 @asyncio.coroutine
