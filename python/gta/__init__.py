@@ -18,7 +18,7 @@ from gta.exceptions import *
 
 __author__ = 'Lennart Grahl <lennart.grahl@gmail.com>'
 __status__ = 'Development'
-__version__ = '0.9.9'
+__version__ = '0.9.10'
 __all__ = exceptions.__all__
 
 
@@ -371,8 +371,8 @@ def tick(count=1):
     """
     ticks = 0
     while count > ticks:
-        _utils.get_logger().debug('WAITING FOR {}', id(_tick_future))  # TODO: Remove
+        #_utils.get_logger().debug('WAITING FOR {}', id(_tick_future))  # TODO: Remove
         yield from asyncio.shield(_tick_future)
         ticks += 1
-        _utils.get_logger().debug('WAITING DONE {}', ticks)  # TODO: Remove
+        #_utils.get_logger().debug('WAITING DONE {}', ticks)  # TODO: Remove
     return

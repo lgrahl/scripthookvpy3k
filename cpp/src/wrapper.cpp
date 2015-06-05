@@ -170,6 +170,9 @@ void Py3kKeyEvent(int code, bool down, bool alt, bool ctrl, bool shift) {
 		PyObject* pKwargs;
 		PyObject* pResult;
 
+		// Acquire GIL
+		PyEval_RestoreThread(pThreadState);
+
 		// Create arguments
 		pArgs = Py_BuildValue("iO",
 			code, // key code
@@ -185,7 +188,7 @@ void Py3kKeyEvent(int code, bool down, bool alt, bool ctrl, bool shift) {
 
 		// Pass key event
 		if (PyCallable_Check(pKeyEvent)) {
-			pResult = PyObject_CallObject(pKeyEvent, NULL);
+			pResult = PyObject_Call(pKeyEvent, pArgs, pKwargs);
 			if (!Py3kException(pResult)) {
 				Py_DECREF(pResult);
 			}
@@ -196,6 +199,9 @@ void Py3kKeyEvent(int code, bool down, bool alt, bool ctrl, bool shift) {
 		// Clean up
 		Py_DECREF(pArgs);
 		Py_DECREF(pKwargs);
+
+		// Release GIL
+		pThreadState = PyEval_SaveThread();
 	}
 }
 
@@ -396,10 +402,12 @@ void OnKeyboardMessage(DWORD key, WORD repeats, BYTE scanCode, BOOL isExtended, 
 		if (key == VK_DELETE) {
 			// Stop on Ctrl + Del
 			action = STOP;
+			log_debug("Stop action set");
 			return;
 		} else if (key == VK_F12) {
 			// Reload on Ctrl + F12
 			action = RESTART;
+			log_debug("Restart action set");
 			return;
 		}
 	}
