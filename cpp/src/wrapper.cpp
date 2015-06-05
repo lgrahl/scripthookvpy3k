@@ -313,13 +313,13 @@ void Py3kInitialize() {
 		// Get necessary functions (borrowed)
 		log_debug("Referencing functions");
 		pInit = PyDict_GetItemString(pDict, "_init");
-		if (pInit == nullptr) { Py_Finalize(); return; }
+		if (pInit == nullptr) { log_error("'gta._init' does not exist"); Py_Finalize(); return; }
 		pExit = PyDict_GetItemString(pDict, "_exit");
-		if (pExit == nullptr) { Py_Finalize(); return; }
+		if (pExit == nullptr) { log_error("'gta._exit' does not exist"); Py_Finalize(); return; }
 		pTick = PyDict_GetItemString(pDict, "_tick");
-		if (pTick == nullptr) { Py_Finalize(); return; }
+		if (pTick == nullptr) { log_error("'gta._tick' does not exist"); Py_Finalize(); return; }
 		pKeyEvent = PyDict_GetItemString(pDict, "_key_event");
-		if (pKeyEvent == nullptr) { Py_Finalize(); return; }
+		if (pKeyEvent == nullptr) { log_error("'gta._key_event' does not exist"); Py_Finalize(); return; }
 
 		// Call init function
 		if (PyCallable_Check(pInit)) {
