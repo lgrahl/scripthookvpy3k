@@ -1,5 +1,6 @@
 __all__ = ('ScriptError', 'ImportScriptError', 'InstallDependencyError',
-           'DependencyBlacklistedError', 'ScriptExecutionError', 'BadBehavingScriptError')
+           'DependencyBlacklistedError', 'ScriptExecutionError', 'BadBehavingScriptError',
+           'RequirementError')
 
 
 class ScriptError(Exception):
@@ -70,3 +71,17 @@ class BadBehavingScriptError(ScriptError):
     """
     A script did not stop in time after it has been cancelled.
     """
+
+
+class RequirementError(ScriptError):
+    """
+    A general requirement exception.
+
+    Arguments:
+        - `requirement`: One or more requirements that are missing.
+    """
+    def __init__(self, requirement):
+        self.requirement = requirement
+
+    def __str__(self):
+        return 'Missing: {}'.format(self.requirement)
