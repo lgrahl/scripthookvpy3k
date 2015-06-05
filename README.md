@@ -11,7 +11,8 @@ included [GTA module](/python/gta).
 * High level [requirement functions](/python/gta/requires) can be chained and waited for
 
 ## Download
-Coming soon.
+Prebuilt binaries can be found on the [releases](https://github.com/lgrahl/scripthookvpy3k/releases)
+page.
 
 ## Installation
 1. Install the [Script Hook V](http://www.dev-c.com/gtav/scripthookv/)
