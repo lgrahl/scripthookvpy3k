@@ -8,7 +8,7 @@ included [GTA module](/python/gta).
 * All native functions from ScriptHook accessible
 * Dependencies will be installed automatically
 * Scripts run as lightweight asynchronous tasks
-* High level [requirement functions](/python/requires) can be chained and waited for
+* High level [requirement functions](/python/gta/requires) can be chained and waited for
 
 ## Download
 Coming soon.
