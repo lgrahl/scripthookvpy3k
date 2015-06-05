@@ -18,7 +18,7 @@ from gta.exceptions import *
 
 __author__ = 'Lennart Grahl <lennart.grahl@gmail.com>'
 __status__ = 'Development'
-__version__ = '0.9.8'
+__version__ = '0.9.9'
 __all__ = exceptions.__all__
 
 
@@ -26,15 +26,19 @@ def _reset_globals():
     """
     Set global attributes.
     """
-    global _utils, _thread, _loop, _tasks, _names, _tick_future
+    global _utils, _thread, _loop, _tasks, _names, _tick_future, _key_future
     _utils = None
     _thread = None
     _loop = None
     _tasks = []
     _names = []
-    if _tick_future is not None:
+    try:
         _tick_future.cancel()
+        _key_future.cancel()
+    except NameError:
+        pass
     _tick_future = asyncio.Future()
+    _key_future = asyncio.Future()
 
 
 def _init(console=False):
@@ -114,25 +118,42 @@ def _tick():
     if _loop is not None and not _loop.is_closed():
         def __tick():
             global _tick_future
-            _utils.get_logger().debug('SET RESULT ON {}', id(_tick_future))
+            #_utils.get_logger().debug('SET RESULT ON {}', id(_tick_future))  # TODO: Remove
             _tick_future.set_result(None)
             _tick_future = asyncio.Future()
-            _utils.get_logger().debug('NEW FUTURE {}', id(_tick_future))
+            #_utils.get_logger().debug('NEW FUTURE {}', id(_tick_future))  # TODO: Remove
         _loop.call_soon_threadsafe(__tick)
+
+
+def _key_event(code, down, **modifiers):
+    """
+    Handle a key event.
+
+    Arguments:
+        - `code`: The key code represented as an integer.
+        - `down`: `True` if the key is pressed, `False` if the key was just released.
+        - `modifiers`: Modifier keys pressed.
+    """
+    if _loop is not None and not _loop.is_closed():
+        logger = _utils.get_logger()
+        logger.debug("Key '{}', down: {}, modifiers: {}", code, down, modifiers)
+
+        def __key_event():
+            global _key_future
+            _key_future.set_result((code, down, modifiers))
+            _key_future = asyncio.Future()
+        _loop.call_soon_threadsafe(__key_event)
+
 
 def _exit():
     """
     Schedule stopping scripts.
     """
-    # Note: _utils might be none when _init wasn't called
-    if _utils is None:
-        return
-    logger = _utils.get_logger()
-
-    # Schedule stopping scripts
     if _loop is not None and not _loop.is_closed():
+        logger = _utils.get_logger()
         logger.debug('Scheduling script termination')
 
+        # Schedule stop routine
         def __stop(loop):
             logger.debug('Stopping scripts')
             loop.create_task(_stop(loop))
@@ -350,8 +371,8 @@ def tick(count=1):
     """
     ticks = 0
     while count > ticks:
-        _utils.get_logger().debug('WAITING FOR {}', id(_tick_future))
+        _utils.get_logger().debug('WAITING FOR {}', id(_tick_future))  # TODO: Remove
         yield from asyncio.shield(_tick_future)
         ticks += 1
-        _utils.get_logger().debug('WAITING DONE {}', ticks)
+        _utils.get_logger().debug('WAITING DONE {}', ticks)  # TODO: Remove
     return
