@@ -1,8 +1,10 @@
 #include "wrapper.h"
 
+Py3kAction action = NONE;
 PyThreadState* pThreadState;
 PyObject* pExit = nullptr;
 PyObject* pTick = nullptr;
+PyObject* pKeyEvent = nullptr;
 std::ofstream logger("scripthookvpy3k.wrapper.log", std::ios_base::trunc | std::ios_base::out);
 
 const char* game_version_name(eGameVersion version) {
@@ -162,8 +164,43 @@ bool Py3kException(PyObject* obj) {
 	}
 }
 
+void Py3kKeyEvent(int code, bool down, bool alt, bool ctrl, bool shift) {
+	if (Py_IsInitialized() && pKeyEvent != nullptr) {
+		PyObject* pArgs;
+		PyObject* pKwargs;
+		PyObject* pResult;
+
+		// Create arguments
+		pArgs = Py_BuildValue("iO",
+			code, // key code
+			down ? Py_True : Py_False // down
+		);
+
+		// Create keyword arguments
+		pKwargs = Py_BuildValue("{s:O,s:O,s:O}",
+			"alt", alt ? Py_True : Py_False,
+			"ctrl", ctrl ? Py_True : Py_False,
+			"shift", shift ? Py_True : Py_False
+		);
+
+		// Pass key event
+		if (PyCallable_Check(pKeyEvent)) {
+			pResult = PyObject_CallObject(pKeyEvent, NULL);
+			if (!Py3kException(pResult)) {
+				Py_DECREF(pResult);
+			}
+		} else {
+			log_error("Key event function is not callable");
+		}
+
+		// Clean up
+		Py_DECREF(pArgs);
+		Py_DECREF(pKwargs);
+	}
+}
+
 void Py3kTick() {
-	if (Py_IsInitialized()) {
+	if (Py_IsInitialized() && pTick != nullptr) {
 		PyObject* pResult;
 
 		// Acquire GIL
@@ -273,14 +310,16 @@ void Py3kInitialize() {
 		pDict = PyModule_GetDict(pModule);
 		Py_DECREF(pModule);
 		if (Py3kException(pDict)) { Py_Finalize(); return; }
-		// Get init, exit and tick functions (borrowed)
+		// Get necessary functions (borrowed)
 		log_debug("Referencing functions");
 		pInit = PyDict_GetItemString(pDict, "_init");
-		if (Py3kException(pInit)) { Py_Finalize(); return; }
+		if (pInit == nullptr) { Py_Finalize(); return; }
 		pExit = PyDict_GetItemString(pDict, "_exit");
-		if (Py3kException(pExit)) { Py_Finalize(); return; }
+		if (pExit == nullptr) { Py_Finalize(); return; }
 		pTick = PyDict_GetItemString(pDict, "_tick");
-		if (Py3kException(pTick)) { Py_Finalize(); return; }
+		if (pTick == nullptr) { Py_Finalize(); return; }
+		pKeyEvent = PyDict_GetItemString(pDict, "_key_event");
+		if (pKeyEvent == nullptr) { Py_Finalize(); return; }
 
 		// Call init function
 		if (PyCallable_Check(pInit)) {
@@ -335,6 +374,7 @@ void Py3kFinalize() {
 		// Reset vars
 		pExit = nullptr;
 		pTick = nullptr;
+		pKeyEvent = nullptr;
 		pThreadState = nullptr;
 	}
 }
@@ -342,6 +382,30 @@ void Py3kFinalize() {
 void Py3kReinitialize() {
 	Py3kFinalize();
 	Py3kInitialize();
+}
+
+void OnKeyboardMessage(DWORD key, WORD repeats, BYTE scanCode, BOOL isExtended, BOOL isWithAlt, BOOL wasDownBefore, BOOL isUpNow) {
+	int code = static_cast<int>(key);
+	bool down = isUpNow == FALSE;
+	bool alt = isWithAlt == TRUE;
+	bool ctrl = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0;
+	bool shift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
+
+	// Catch built-in key events
+	if (ctrl && !down) {
+		if (key == VK_DELETE) {
+			// Stop on Ctrl + Del
+			action = STOP;
+			return;
+		} else if (key == VK_F12) {
+			// Reload on Ctrl + F12
+			action = RESTART;
+			return;
+		}
+	}
+	
+	// Propagate key event
+	Py3kKeyEvent(code, down, alt, ctrl, shift);
 }
 
 void Py3kWrapperStart() {
@@ -354,17 +418,22 @@ void Py3kWrapperStart() {
 
 	// Main loop
 	while (true) {
-		if (IsKeyJustUp(VK_DELETE)) {
-			// Stop
-			log_debug("Enforcing stop");
-			Py3kFinalize();
-		} else if (IsKeyJustUp(VK_F12)) {
-			// Restart
-			log_debug("Reloading");
-			Py3kReinitialize();
-		} else {
-			// Tick
-			Py3kTick();
+		switch (action) {
+			case STOP:
+				// Stop
+				log_debug("Enforcing stop");
+				Py3kFinalize();
+				action = NONE;
+				break;
+			case RESTART:
+				// Restart
+				log_debug("Reloading");
+				Py3kReinitialize();
+				action = NONE;
+				break;
+			default:
+				// Tick
+				Py3kTick();
 		}
 
 		// Yield

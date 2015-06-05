@@ -15,12 +15,10 @@
     <ClInclude Include="..\sdk\inc\main.h" />
     <ClInclude Include="..\sdk\inc\natives.h" />
     <ClInclude Include="..\sdk\inc\types.h" />
-    <ClInclude Include="src\keyboard.h" />
     <ClInclude Include="src\natives_wrap.h" />
     <ClInclude Include="src\wrapper.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\keyboard.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\natives_wrap.cxx" />
     <ClCompile Include="src\wrapper.cpp" />

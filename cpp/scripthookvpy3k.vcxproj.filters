@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="src\keyboard.h" />
     <ClInclude Include="src\wrapper.h" />
     <ClInclude Include="..\sdk\inc\enums.h">
       <Filter>include</Filter>
@@ -23,7 +22,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\keyboard.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\wrapper.cpp" />
     <ClCompile Include="src\natives_wrap.cxx" />
