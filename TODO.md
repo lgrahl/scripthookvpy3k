@@ -4,8 +4,6 @@ Ordered as of priority.
 
 ## List
 
-* Tick/Interval co-routine
-* Keyboard co-routine
 * UI package
 * Console
   - `reload`: Reloads Python and all scripts

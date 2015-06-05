@@ -8,6 +8,7 @@ included [GTA module](/python/gta).
 * All native functions from ScriptHook accessible
 * Dependencies will be installed automatically
 * Scripts run as lightweight asynchronous tasks
+* High level *requirement* functions can be chained and waited for
 
 ## Download
 Coming soon.
@@ -15,7 +16,7 @@ Coming soon.
 ## Installation
 1. Install the [Script Hook V](http://www.dev-c.com/gtav/scripthookv/)
 2. Install [Python 3.4.3 for Windows x64](https://www.python.org/ftp/python/3.4.3/python-3.4.3.amd64.msi)
-3. Extract the contents of the archive into your GTA V folder
+3. Extract the contents of the downloaded archive into your GTA V folder
 
 ## Writing Scripts
 Please, read [Develop with asyncio](https://docs.python.org/3/library/asyncio-dev.htm)
@@ -32,7 +33,7 @@ You can (and should) provide metadata in your script. See
 To run the script in GTA V, copy your ``.py`` script file into ``python/scripts`` in your
 GTA V folder.
 
-Press F12 in game to reload all scripts.
+Press Ctrl+F12 in game to reload all scripts or Ctrl+Del to just stop them.
 
 ## Building
 If you want to build the ASI plugin yourself, you'll need:
