@@ -1,17 +1,20 @@
 import sys
+import os
 import unittest.mock
 import time
-
-import gta
 
 
 class GTANativeMock(unittest.mock.MagicMock):
     pass
 
+# Create fake native module
+sys.modules['_gta_native'] = GTANativeMock()
+import gta
+
 
 def main(stop_after=10.0):
-    # Create fake native module
-    sys.modules['_gta_native'] = GTANativeMock()
+    # We are running this from the 'python' directory, so we need to go up
+    os.chdir('../')
 
     # noinspection PyProtectedMember
     gta._init(console=True)

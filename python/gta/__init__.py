@@ -18,7 +18,7 @@ from gta.exceptions import *
 
 __author__ = 'Lennart Grahl <lennart.grahl@gmail.com>'
 __status__ = 'Development'
-__version__ = '0.9.10'
+__version__ = '0.9.11'
 __all__ = exceptions.__all__
 
 
@@ -366,6 +366,10 @@ def tick(count=1):
     """
     Wait for one or more game ticks.
 
+    .. warning:: Instead of using this function in your script, you
+                 should write a coroutine and create a pull request on
+                 GitHub.
+
     Arguments:
         - `count`: The amount of game ticks to wait for.
     """
@@ -376,3 +380,9 @@ def tick(count=1):
         ticks += 1
         #_utils.get_logger().debug('WAITING DONE {}', ticks)  # TODO: Remove
     return
+
+
+@asyncio.coroutine
+def _key(code=None, modifiers=None):
+    if modifiers is None:
+        modifiers = {}
