@@ -6,6 +6,8 @@ in game by using the Script Hook V from Alexander Blade.
 * All [native functions](http://www.dev-c.com/nativedb/) accessible
 * Scripts run as lightweight asynchronous tasks
 * High level [requirement functions](/python/gta/requires) can be chained and waited for
+* All the [fancy Python packages out there](https://warehouse.python.org) can be used
+  and...
 * Dependencies will be installed automatically
 
 ## Download
