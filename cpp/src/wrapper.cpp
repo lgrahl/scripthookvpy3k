@@ -382,6 +382,8 @@ void Py3kFinalize() {
 		pTick = nullptr;
 		pKeyEvent = nullptr;
 		pThreadState = nullptr;
+	} else {
+		log_debug("Not initialised");
 	}
 }
 
@@ -425,6 +427,7 @@ void Py3kWrapperStart() {
 	Py3kReinitialize();
 
 	// Main loop
+	log_debug("Entering main loop");
 	while (true) {
 		switch (action) {
 			case STOP:
@@ -447,6 +450,7 @@ void Py3kWrapperStart() {
 		// Yield
 		scriptWait(0);
 	}
+	log_error("Exited main loop");
 }
 
 void Py3kWrapperStop() {

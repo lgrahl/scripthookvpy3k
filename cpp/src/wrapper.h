@@ -12,7 +12,7 @@
 #include <iostream>
 #include <fstream>
 
-#define PY3KWRAPPER_VERSION "0.9.7"
+#define PY3KWRAPPER_VERSION "0.9.8"
 
 enum Py3kAction : int {
 	NONE,
