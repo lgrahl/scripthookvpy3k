@@ -72,6 +72,7 @@ def main():
                 weather, *_ = weather_types
         except (ValueError, KeyError):
             logger.warning('Could not parse weather data')
+            yield from asyncio.sleep(10.0)
             continue
 
         # Apply weather type in GTA
@@ -79,15 +80,12 @@ def main():
         gta_native.gameplay.set_weather_type_now_persist(weather)
         gta_native.gameplay.clear_weather_type_persist()
 
+        # TODO: Set wind
+        # gta_native.gameplay.set_wind(1.0)
+        # gta_native.gameplay.set_wind_speed(11.99)
+        # gta_native.gameplay.set_wind_direction(gta_native.entity.get_entity_heading(gta_native.player.player_ped_id()))
+
+        # TODO: Set time
+
         # Wait for a minute
         yield from asyncio.sleep(60.0)
-
-    # gta_native.gameplay.set_wind(1.0)
-    # gta_native.gameplay.set_wind_speed(11.99)
-    # gta_native.gameplay.set_wind_direction(gta_native.entity.get_entity_heading(gta_native.player.player_ped_id()))
-    # for weather in ['WIND', 'EXTRASUNNY', 'CLEAR', 'CLOUDS', 'SMOG', 'FOGGY', 'OVERCAST',
-    #                 'RAIN', 'THUNDER', 'CLEARING', 'NEUTRAL', 'SNOW', 'BLIZZARD',
-    #                 'SNOWLIGHT', 'XMAS']:
-    #     gta_native.gameplay.set_weather_type_now_persist(weather)
-    #     gta_native.gameplay.clear_weather_type_persist()
-    #     yield from asyncio.sleep(10.0)
