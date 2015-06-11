@@ -19,7 +19,7 @@ from gta.exceptions import *
 
 __author__ = 'Lennart Grahl <lennart.grahl@gmail.com>'
 __status__ = 'Development'
-__version__ = '0.9.13'
+__version__ = '0.9.14'
 __all__ = ('Key',) + exceptions.__all__
 
 
