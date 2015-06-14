@@ -1,7 +1,7 @@
 """
 Menu components that can be used to create a menu.
 """
-from . import Container
+from gta.ui import Container
 
 __all__ = ('Menu',)
 
