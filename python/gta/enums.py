@@ -142,3 +142,12 @@ class Key(enum.Enum):
     OEM_5 = 220  # May vary, US: '\|' key
     OEM_6 = 221  # May vary, US: ']}' key
     OEM_7 = 222  # May vary, US: single-quote/double-quote key
+
+
+@enum.unique
+class Font(enum.Enum):
+    chalet_london = 0
+    house_script = 1
+    monospace = 2
+    chalet_comprime_cologne = 4
+    pricedown = 7
