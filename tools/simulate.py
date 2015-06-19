@@ -11,6 +11,9 @@ class GTANativeMock(unittest.mock.MagicMock):
 sys.modules['_gta_native'] = GTANativeMock()
 import gta
 
+from gta import ui
+from gta.ui.menu import Menu
+
 
 # noinspection PyProtectedMember
 def main(stop_after=10.0):
@@ -21,6 +24,10 @@ def main(stop_after=10.0):
     gta._init(console=True)
     gta._tick()
     time.sleep(1.0)
+
+    # TODO: Add Menu
+    menu = Menu()
+    # ui.add(menu)
 
     # Inject some keys and ticks
     gta._tick()
