@@ -70,7 +70,7 @@ def key(codes=None, down=False, **modifiers):
         if codes is not None and code not in codes:
             continue
         # Check down
-        if down_ is not None and down != down_:
+        if down is not None and down != down_:
             continue
         # Check modifiers
         if any((modifiers_[key_] != value for key_, value in modifiers.items())):
