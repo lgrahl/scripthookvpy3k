@@ -1,7 +1,7 @@
 import asyncio
 
 from gta import ui, utils
-from gta.ui import primitive
+from gta.ui import Dimension, primitive
 
 __author__ = 'Lennart Grahl <lennart.grahl@gmail.com>'
 __status__ = 'Development'
@@ -17,12 +17,11 @@ def main():
     counter = 0
 
     # Create primitive UI elements
-    rectangle = primitive.Rectangle()
+    rectangle = primitive.Rectangle(size=Dimension.Quarter)
     ui.add(rectangle)
 
     while True:
         yield from asyncio.sleep(1.0)
-        return
 
         # Modify the created UI elements
         # TODO

@@ -12,20 +12,40 @@ __all__ = ('Point', 'Color', 'Direction', 'Align',
 
 class Point(collections.namedtuple('Point', 'x, y')):
     """
-    A 2D point containing x- and y-coordinates.
+    A 2D point containing `x`- and `y`-coordinates.
 
     Arguments:
-        - `x`: The x-coordinate.
-        - `y`: The y-coordinate.
+        - `x`: A `x`-coordinate value between ``0`` and ``1``.
+        - `y`: A `y`-coordinate value between ``0`` and ``1``.
     """
-    pass
+    Zero = TopLeft = TopRight = BottomLeft = BottomRight = Center = None
+    __slots__ = ()
 
 # Point shorthands
+Point.Zero = Point(0.0, 0.0)
 Point.TopLeft = Point(0.0, 0.0)
 Point.TopRight = Point(1.0, 0.0)
 Point.BottomLeft = Point(0.0, 1.0)
 Point.BottomRight = Point(1.0, 1.0)
 Point.Center = Point(0.5, 0.5)
+
+
+class Dimension(collections.namedtuple('Dimension', 'width, height')):
+    """
+    A 2D dimension containing width and height.
+
+    Arguments:
+        - `width`: A width value between ``0`` and ``1``.
+        - `height`: A height value between ``0`` and ``1``.
+    """
+    Zero = Quarter = Half = Full = None
+    __slots__ = ()
+
+# Dimension shorthands
+Dimension.Zero = Dimension(0.0, 0.0)
+Dimension.Quarter = Dimension(0.25, 0.25)
+Dimension.Half = Dimension(0.5, 0.5)
+Dimension.Full = Dimension(1.0, 1.0)
 
 
 class Distance(collections.namedtuple('Distance', 'top, right, bottom, left')):
@@ -41,6 +61,9 @@ class Distance(collections.namedtuple('Distance', 'top, right, bottom, left')):
     Alternatively, a single CSS-like margin string can be supplied
     with support for one to four values.
     """
+    Zero = None
+    __slots__ = ()
+
     def __new__(cls, *args, **kwargs):
         # Convert CSS-like margin string
         distance, *_ = args
@@ -59,8 +82,8 @@ class Distance(collections.namedtuple('Distance', 'top, right, bottom, left')):
                 left = right
             elif length == 4:
                 top, right, bottom, left = values
-            return super(Distance, cls).__new__(cls, top, right, bottom, left)
-        return super(Distance, cls).__new__(cls, *args, **kwargs)
+            return super().__new__(cls, top, right, bottom, left)
+        return super().__new__(cls, *args, **kwargs)
 
 # Distance shorthands
 Distance.Zero = Distance('0')
@@ -75,13 +98,39 @@ class Color(collections.namedtuple('Color', 'r, g, b, a')):
         - `r`: A red colour value between ``0`` and ``255``.
         - `g`: A green colour value between ``0`` and ``255``.
         - `b`: A blue colour value between ``0`` and ``255``.
-        - `a`: An alpha channel value between ``0`` and ``1``. Defaults
-          to ``1.0``.
+        - `a`: An alpha channel value between ``0`` and ``255``.
+          Defaults to ``255``.
 
     Alternatively, a single CSS-like hexadecimal colour string can be
     supplied.
     """
-    def __new__(cls, *args, a=1.0, **kwargs):
+    Aqua = AliceBlue = AntiqueWhite = Black = Blue = Cyan = DarkBlue = DarkCyan =\
+        DarkGreen = DarkTurquoise = DeepSkyBlue = Green = Lime = MediumBlue =\
+        MediumSpringGreen = Navy = SpringGreen = Teal = MidnightBlue = DodgerBlue =\
+        LightSeaGreen = ForestGreen = SeaGreen = DarkSlateGray = DarkSlateGrey =\
+        LimeGreen = MediumSeaGreen = Turquoise = RoyalBlue = SteelBlue = DarkSlateBlue\
+        = MediumTurquoise = Indigo = DarkOliveGreen = CadetBlue = CornflowerBlue =\
+        MediumAquamarine = DimGray = DimGrey = SlateBlue = OliveDrab = SlateGray =\
+        SlateGrey = LightSlateGray = LightSlateGrey = MediumSlateBlue = LawnGreen =\
+        Aquamarine = Chartreuse = Gray = Grey = Maroon = Olive = Purple = LightSkyBlue =\
+        SkyBlue = BlueViolet = DarkMagenta = DarkRed = SaddleBrown = DarkSeaGreen =\
+        LightGreen = MediumPurple = DarkViolet = PaleGreen = DarkOrchid = YellowGreen\
+        = Sienna = Brown = DarkGray = DarkGrey = GreenYellow = LightBlue = PaleTurquoise\
+        = LightSteelBlue = PowderBlue = FireBrick = DarkGoldenrod = MediumOrchid =\
+        RosyBrown = DarkKhaki = Silver = MediumVioletRed = IndianRed = Peru = Chocolate\
+        = Tan = LightGray = LightGrey = Thistle = Goldenrod = Orchid = PaleVioletRed =\
+        Crimson = Gainsboro = Plum = BurlyWood = LightCyan = Lavender = DarkSalmon =\
+        PaleGoldenrod = Violet = Azure = Honeydew = Khaki = LightCoral = SandyBrown =\
+        Beige = MintCream = Wheat = WhiteSmoke = GhostWhite = LightGoldenrodYellow =\
+        Linen = Salmon = OldLace = Bisque = BlancheDalmond = Coral = CornSilk =\
+        DarkOrange = DeepPink = FloralWhite = Fuchsia = Gold = HotPink = Ivory =\
+        LavenderBlush = LemonChiffon = LightPink = LightSalmon = LightYellow = Magenta\
+        = MistyRose = Moccasin = NavajoWhite = Orange = OrangeRed = PapayaWhip =\
+        PeachPuff = Pink = Red = Seashell = Snow = Tomato = White = Yellow =\
+        RebeccaPurple = None
+    __slots__ = ()
+
+    def __new__(cls, *args, a=255, **kwargs):
         # Convert CSS-like hexadecimal colour to integer values
         if len(args) > 0 and isinstance(args[0], str):
             color = args[0]
@@ -95,9 +144,17 @@ class Color(collections.namedtuple('Color', 'r, g, b, a')):
         alpha value.
 
         Arguments:
-            - `value`: An alpha channel value between ``0`` and ``1``.
+            - `value`: An alpha channel value between ``0`` and
+              ``255``.
         """
         return Color(self.r, self.g, self.b, a=value)
+
+    @property
+    def rgba(self):
+        """
+        Return the instances RGBA values as a tuple.
+        """
+        return tuple(self)
 
 # Colour shorthands
 Color.Aqua = Color(0, 255, 255)
@@ -280,11 +337,11 @@ class Item:
         - `padding`: The padding of the UI element.
         - `position`: The position of the UI element on the view port.
           Defaults to top left of the screen.
-        - `size`: The size of the UI element.
+        - `size`: The size of the UI element. Defaults to zero.
         - `color`: The colour of the UI element. Defaults to `black`.
     """
     def __init__(self, enabled=True, margin=Distance.Zero, position=Point.TopLeft,
-                 size=None, color=Color.Black):
+                 size=Dimension.Zero, color=Color.Black):
         self._settings = {}
         self.enabled = enabled
         self.margin = margin
@@ -307,14 +364,6 @@ class Item:
     @margin.setter
     def margin(self, value):
         self._settings['margin'] = value
-
-    @property
-    def padding(self):
-        return self._settings.get('padding')
-
-    @padding.setter
-    def padding(self, value):
-        self._settings['padding'] = value
 
     @property
     def position(self):
@@ -340,7 +389,25 @@ class Item:
     def color(self, value):
         self._settings['color'] = value
 
-    def draw(self, offset=None, **settings):
+    def get_coordinates(self, offset):
+        """
+        Return the relative `x` and `y` coordinates. Takes account
+        to `margin`, it's own `position` and the passed `offset`.
+
+        Arguments:
+            - `offset`: An offset for the item's position.
+        """
+        x = self.position.x + self.margin.left + offset.x
+        y = self.position.y + self.margin.top + offset.y
+        return x, y
+
+    def get_dimension(self):
+        """
+        Return the relative dimension.
+        """
+        return self.size.width, self.size.height
+
+    def draw(self, offset=Point.Zero, **settings):
         """
         Draw the element.
 
@@ -353,6 +420,7 @@ class Item:
         raise NotImplementedError()
 
 
+# noinspection PyAbstractClass
 class SelectableItem(Item):
     """
     Abstract selectable UI element.
@@ -373,6 +441,7 @@ class SelectableItem(Item):
         raise NotImplementedError()
 
 
+# noinspection PyAbstractClass
 class ActivatableItem(SelectableItem):
     """
     Abstract activatable UI element.
@@ -387,6 +456,7 @@ class ActivatableItem(SelectableItem):
         raise NotImplementedError()
 
 
+# noinspection PyAbstractClass
 class AlterableItem(SelectableItem):
     """
     Abstract alterable UI element.
@@ -461,7 +531,7 @@ class Container(Item):
         """
         self._items.append(item)
 
-    def draw(self, offset=None, **settings):
+    def draw(self, offset=Point.Zero, **settings):
         """
         Draw the UI elements of the container.
 
@@ -470,7 +540,6 @@ class Container(Item):
             - `settings`: Fallback settings that will be passed to the
               UI elements.
         """
-        offset = Point(0.0, 0.0) if offset is None else offset
         # Override default settings
         settings.update(self._settings)
 
@@ -495,6 +564,9 @@ class Container(Item):
 
 
 def _new_viewport():
+    """
+    Create and return a new viewport set.
+    """
     return weakref.WeakSet()
 
 _viewport = _new_viewport()
@@ -533,6 +605,7 @@ def reset():
     global _viewport
     _viewport = _new_viewport()
 
+
 def draw():
     """
     Draw all UI items on the viewport.
@@ -540,4 +613,5 @@ def draw():
     .. warning:: Do not call this function from a script!
     """
     for item in _viewport:
-        item.draw()
+        if item.enabled:
+            item.draw()
