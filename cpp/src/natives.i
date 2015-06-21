@@ -4,15 +4,17 @@
 %apply int *OUTPUT {
 	int* red, int* green, int* blue,
 	int* tintIndex,
-	float* x, float* y, float* z, float* w,
 	int* r, int* g, int* b, int* a,
 	int* colorPrimary, int* colorSecondary,
 	int* pearlescentColor, int* wheelColor,
 	int* paintType, int* color,
 	int* ammo,
 	int* x, int* y,
+	int* outValue
+};
+%apply float *OUTPUT {
+	float* x, float* y, float* z, float* w,
 	float* x2d, float* y2d,
-	int* outValue,
 	float* outValue,
 	float* height
 };
