@@ -112,8 +112,8 @@ class _Player(_object):
         return _gta_native.CHANGE_PLAYER_PED(player, ped, p2, p3)
 
     @staticmethod
-    def get_player_rgb_colour(player, red, green, blue):
-        return _gta_native.GET_PLAYER_RGB_COLOUR(player, red, green, blue)
+    def get_player_rgb_colour(player):
+        return _gta_native.GET_PLAYER_RGB_COLOUR(player)
 
     @staticmethod
     def get_number_of_players():
@@ -760,8 +760,8 @@ class _Player(_object):
         return _gta_native.SET_PLAYER_PARACHUTE_TINT_INDEX(player, tintIndex)
 
     @staticmethod
-    def get_player_parachute_tint_index(player, tintIndex):
-        return _gta_native.GET_PLAYER_PARACHUTE_TINT_INDEX(player, tintIndex)
+    def get_player_parachute_tint_index(player):
+        return _gta_native.GET_PLAYER_PARACHUTE_TINT_INDEX(player)
 
     @staticmethod
     def _0xAF04C87F5DC1DF38(p0, p1):
@@ -776,8 +776,8 @@ class _Player(_object):
         return _gta_native.SET_PLAYER_PARACHUTE_PACK_TINT_INDEX(player, tintIndex)
 
     @staticmethod
-    def get_player_parachute_pack_tint_index(player, tintIndex):
-        return _gta_native.GET_PLAYER_PARACHUTE_PACK_TINT_INDEX(player, tintIndex)
+    def get_player_parachute_pack_tint_index(player):
+        return _gta_native.GET_PLAYER_PARACHUTE_PACK_TINT_INDEX(player)
 
     @staticmethod
     def _0x7DDAB28D31FAC363(p0):
@@ -1088,8 +1088,8 @@ class _Entity(_object):
         return _gta_native.GET_ENTITY_PITCH(entity)
 
     @staticmethod
-    def get_entity_quaternion(entity, x, y, z, w):
-        return _gta_native.GET_ENTITY_QUATERNION(entity, x, y, z, w)
+    def get_entity_quaternion(entity):
+        return _gta_native.GET_ENTITY_QUATERNION(entity)
 
     @staticmethod
     def get_entity_roll(entity):
@@ -4100,8 +4100,8 @@ class _Vehicle(_object):
         return _gta_native.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(vehicle, r, g, b)
 
     @staticmethod
-    def get_vehicle_custom_primary_colour(vehicle, r, g, b):
-        return _gta_native.GET_VEHICLE_CUSTOM_PRIMARY_COLOUR(vehicle, r, g, b)
+    def get_vehicle_custom_primary_colour(vehicle):
+        return _gta_native.GET_VEHICLE_CUSTOM_PRIMARY_COLOUR(vehicle)
 
     @staticmethod
     def clear_vehicle_custom_primary_colour(vehicle):
@@ -4116,8 +4116,8 @@ class _Vehicle(_object):
         return _gta_native.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(vehicle, r, g, b)
 
     @staticmethod
-    def get_vehicle_custom_secondary_colour(vehicle, r, g, b):
-        return _gta_native.GET_VEHICLE_CUSTOM_SECONDARY_COLOUR(vehicle, r, g, b)
+    def get_vehicle_custom_secondary_colour(vehicle):
+        return _gta_native.GET_VEHICLE_CUSTOM_SECONDARY_COLOUR(vehicle)
 
     @staticmethod
     def clear_vehicle_custom_secondary_colour(vehicle):
@@ -4192,8 +4192,8 @@ class _Vehicle(_object):
         return _gta_native.REMOVE_VEHICLE_STUCK_CHECK(p0)
 
     @staticmethod
-    def get_vehicle_colours(vehicle, colorPrimary, colorSecondary):
-        return _gta_native.GET_VEHICLE_COLOURS(vehicle, colorPrimary, colorSecondary)
+    def get_vehicle_colours(vehicle):
+        return _gta_native.GET_VEHICLE_COLOURS(vehicle)
 
     @staticmethod
     def is_vehicle_seat_free(vehicle, seatIndex):
@@ -4828,8 +4828,8 @@ class _Vehicle(_object):
         return _gta_native.SET_VEHICLE_EXTRA_COLOURS(vehicle, pearlescentColor, wheelColor)
 
     @staticmethod
-    def get_vehicle_extra_colours(vehicle, pearlescentColor, wheelColor):
-        return _gta_native.GET_VEHICLE_EXTRA_COLOURS(vehicle, pearlescentColor, wheelColor)
+    def get_vehicle_extra_colours(vehicle):
+        return _gta_native.GET_VEHICLE_EXTRA_COLOURS(vehicle)
 
     @staticmethod
     def stop_all_garage_activity():
@@ -5332,12 +5332,12 @@ class _Vehicle(_object):
         return _gta_native.SET_VEHICLE_MOD_COLOR_2(vehicle, paintType, color)
 
     @staticmethod
-    def get_vehicle_mod_color_1(vehicle, paintType, color, p3):
-        return _gta_native.GET_VEHICLE_MOD_COLOR_1(vehicle, paintType, color, p3)
+    def get_vehicle_mod_color_1(vehicle, p3):
+        return _gta_native.GET_VEHICLE_MOD_COLOR_1(vehicle, p3)
 
     @staticmethod
-    def get_vehicle_mod_color_2(vehicle, paintType, color):
-        return _gta_native.GET_VEHICLE_MOD_COLOR_2(vehicle, paintType, color)
+    def get_vehicle_mod_color_2(vehicle):
+        return _gta_native.GET_VEHICLE_MOD_COLOR_2(vehicle)
 
     @staticmethod
     def _0xB45085B721EFD38C(p0, p1):
@@ -5416,8 +5416,8 @@ class _Vehicle(_object):
         return _gta_native.SET_VEHICLE_TYRE_SMOKE_COLOR(vehicle, r, g, b)
 
     @staticmethod
-    def get_vehicle_tyre_smoke_color(vehicle, r, g, b):
-        return _gta_native.GET_VEHICLE_TYRE_SMOKE_COLOR(vehicle, r, g, b)
+    def get_vehicle_tyre_smoke_color(vehicle):
+        return _gta_native.GET_VEHICLE_TYRE_SMOKE_COLOR(vehicle)
 
     @staticmethod
     def set_vehicle_window_tint(vehicle, tint):
@@ -5432,8 +5432,8 @@ class _Vehicle(_object):
         return _gta_native.GET_NUM_VEHICLE_WINDOW_TINTS()
 
     @staticmethod
-    def get_vehicle_color(vehicle, r, g, b):
-        return _gta_native.GET_VEHICLE_COLOR(vehicle, r, g, b)
+    def get_vehicle_color(vehicle):
+        return _gta_native.GET_VEHICLE_COLOR(vehicle)
 
     @staticmethod
     def _0xEEBFC7A7EFDC35B4(p0):
@@ -5888,8 +5888,8 @@ class _Vehicle(_object):
         return _gta_native._SET_VEHICLE_NEON_LIGHTS_COLOUR(vehicle, r, g, b)
 
     @staticmethod
-    def _GET_VEHICLE_NEON_LIGHTS_COLOUR(vehicle, r, g, b):
-        return _gta_native._GET_VEHICLE_NEON_LIGHTS_COLOUR(vehicle, r, g, b)
+    def _GET_VEHICLE_NEON_LIGHTS_COLOUR(vehicle):
+        return _gta_native._GET_VEHICLE_NEON_LIGHTS_COLOUR(vehicle)
 
     @staticmethod
     def _SET_VEHICLE_NEON_LIGHT_ENABLED(vehicle, index, toggle):
@@ -11008,16 +11008,16 @@ class _Weapon(_object):
         return _gta_native.GET_MAX_AMMO_IN_CLIP(ped, weaponHash, p2)
 
     @staticmethod
-    def get_ammo_in_clip(ped, weaponHash, ammo):
-        return _gta_native.GET_AMMO_IN_CLIP(ped, weaponHash, ammo)
+    def get_ammo_in_clip(ped, weaponHash):
+        return _gta_native.GET_AMMO_IN_CLIP(ped, weaponHash)
 
     @staticmethod
     def set_ammo_in_clip(ped, weaponHash, ammo):
         return _gta_native.SET_AMMO_IN_CLIP(ped, weaponHash, ammo)
 
     @staticmethod
-    def get_max_ammo(ped, weaponHash, ammo):
-        return _gta_native.GET_MAX_AMMO(ped, weaponHash, ammo)
+    def get_max_ammo(ped, weaponHash):
+        return _gta_native.GET_MAX_AMMO(ped, weaponHash)
 
     @staticmethod
     def set_ped_ammo_by_type(ped, ammoType, ammo):
@@ -12372,8 +12372,8 @@ class _Ui(_object):
         return _gta_native._0xD2049635DEB9C375()
 
     @staticmethod
-    def get_hud_colour(hudColour, r, g, b, a):
-        return _gta_native.GET_HUD_COLOUR(hudColour, r, g, b, a)
+    def get_hud_colour(hudColour):
+        return _gta_native.GET_HUD_COLOUR(hudColour)
 
     @staticmethod
     def _0xD68A5FF8A3A89874(p0, p1, p2, p3):
@@ -13964,12 +13964,12 @@ class _Graphics(_object):
         return _gta_native._0x9B6E70C5CEEF4EEB(p0)
 
     @staticmethod
-    def get_screen_resolution(x, y):
-        return _gta_native.GET_SCREEN_RESOLUTION(x, y)
+    def get_screen_resolution():
+        return _gta_native.GET_SCREEN_RESOLUTION()
 
     @staticmethod
-    def _GET_SCREEN_ACTIVE_RESOLUTION(x, y):
-        return _gta_native._GET_SCREEN_ACTIVE_RESOLUTION(x, y)
+    def _GET_SCREEN_ACTIVE_RESOLUTION():
+        return _gta_native._GET_SCREEN_ACTIVE_RESOLUTION()
 
     @staticmethod
     def _GET_SCREEN_ASPECT_RATIO(b):
@@ -14016,8 +14016,8 @@ class _Graphics(_object):
         return _gta_native.SET_NOISINESSOVERIDE(p0)
 
     @staticmethod
-    def _WORLD3D_TO_SCREEN2D(x3d, y3d, z3d, x2d, y2d):
-        return _gta_native._WORLD3D_TO_SCREEN2D(x3d, y3d, z3d, x2d, y2d)
+    def _WORLD3D_TO_SCREEN2D(x3d, y3d, z3d):
+        return _gta_native._WORLD3D_TO_SCREEN2D(x3d, y3d, z3d)
 
     @staticmethod
     def get_texture_resolution(textureDict, textureName):
@@ -15056,16 +15056,16 @@ class _Stats(_object):
         return _gta_native._0xC2F84B7F9C4D0C61(statName, p1)
 
     @staticmethod
-    def stat_get_int(statHash, outValue, p2):
-        return _gta_native.STAT_GET_INT(statHash, outValue, p2)
+    def stat_get_int(statHash, p2):
+        return _gta_native.STAT_GET_INT(statHash, p2)
 
     @staticmethod
-    def stat_get_float(statHash, outValue, p2):
-        return _gta_native.STAT_GET_FLOAT(statHash, outValue, p2)
+    def stat_get_float(statHash, p2):
+        return _gta_native.STAT_GET_FLOAT(statHash, p2)
 
     @staticmethod
-    def stat_get_bool(statHash, outValue, p2):
-        return _gta_native.STAT_GET_BOOL(statHash, outValue, p2)
+    def stat_get_bool(statHash, p2):
+        return _gta_native.STAT_GET_BOOL(statHash, p2)
 
     @staticmethod
     def stat_get_date(statHash, p1, p2, p3):
@@ -16868,12 +16868,12 @@ rope = _Rope
 
 class _Water(_object):
     @staticmethod
-    def get_water_height(x, y, z, height):
-        return _gta_native.GET_WATER_HEIGHT(x, y, z, height)
+    def get_water_height(x, y, z):
+        return _gta_native.GET_WATER_HEIGHT(x, y, z)
 
     @staticmethod
-    def get_water_height_no_waves(x, y, z, height):
-        return _gta_native.GET_WATER_HEIGHT_NO_WAVES(x, y, z, height)
+    def get_water_height_no_waves(x, y, z):
+        return _gta_native.GET_WATER_HEIGHT_NO_WAVES(x, y, z)
 
     @staticmethod
     def _0xFFA5D878809819DB(p0, p1, p2, p3, p4, p5, p6):

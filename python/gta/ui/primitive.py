@@ -23,8 +23,9 @@ class Rectangle(Item):
         width, height = self.get_dimension()
 
         # Use native functions to draw
-        logger.warning('gta_native.graphics.get_screen_resolution(None, None)')
-        gta_native.graphics.get_screen_resolution(None, None)
+        logger.warning('gta_native.graphics.get_screen_resolution()')
+        gta_native.graphics.get_screen_resolution()
+        logger.info('Screen resolution: {}', gta_native.graphics.get_screen_resolution())
         logger.warning('gta_native.ui.set_text_font(Font.chalet_london)')
         gta_native.ui.set_text_font(Font.chalet_london)
         logger.warning('gta_native.ui.set_text_scale(0.0, 0.35)')
