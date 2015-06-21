@@ -142,7 +142,7 @@ def _tick():
             global _tick_future
             _tick_future.set_result(None)
             _tick_future = asyncio.Future(loop=_loop)
-            ui.draw()
+            #ui.draw()
         _loop.call_soon_threadsafe(__tick)
 
 

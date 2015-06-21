@@ -1,6 +1,7 @@
 import asyncio
 
-from gta import ui, utils
+from gta import Key, ui, utils
+from gta.events import key
 from gta.ui import Dimension, primitive
 
 __author__ = 'Lennart Grahl <lennart.grahl@gmail.com>'
@@ -21,7 +22,8 @@ def main():
     ui.add(rectangle)
 
     while True:
-        yield from asyncio.sleep(1.0)
+        yield from key(codes=Key.F12)
+        ui.draw()
 
         # Modify the created UI elements
         # TODO
