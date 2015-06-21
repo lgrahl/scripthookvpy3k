@@ -11,42 +11,39 @@ class GTANativeMock(unittest.mock.MagicMock):
 sys.modules['_gta_native'] = GTANativeMock()
 import gta
 
-from gta import ui
-from gta.ui.menu import Menu
-
 
 # noinspection PyProtectedMember
-def main(stop_after=10.0):
+def main(seconds=5.0):
+    def sleep(remaining):
+        nonlocal seconds
+        seconds -= remaining
+        time.sleep(remaining)
+    
     # We are running this from the 'python' directory, so we need to go up
     os.chdir('../')
 
     # Initialise
     gta._init(console=True)
     gta._tick()
-    time.sleep(1.0)
-
-    # TODO: Add Menu
-    menu = Menu()
-    # ui.add(menu)
+    sleep(1.0)
 
     # Inject some keys and ticks
     gta._tick()
     gta._key(gta.Key.ADD.value, False, alt=False, ctrl=False, shift=False)
-    time.sleep(0.2)
+    sleep(0.2)
     gta._tick()
-    time.sleep(0.3)
+    sleep(0.3)
     gta._key(gta.Key.ADD.value, False, alt=False, ctrl=False, shift=True)
     gta._tick()
-    time.sleep(0.5)
+    sleep(0.5)
     gta._tick()
     gta._key(gta.Key.SUBTRACT.value, False, alt=False, ctrl=False, shift=False)
-    gta._tick()
-    gta._tick()
+    sleep(0.33)
+    while seconds > 0:
+        gta._tick()
+        sleep(0.25)
 
     # Stop
-    if stop_after > 0:
-        time.sleep(stop_after)
-    # noinspection PyProtectedMember
     gta._exit()
 
 

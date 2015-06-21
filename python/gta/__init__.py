@@ -13,7 +13,7 @@ import atexit
 
 import gta_native
 
-from gta import exceptions, enums
+from gta import ui, exceptions, enums
 from gta.exceptions import *
 from gta.enums import *
 
@@ -36,6 +36,12 @@ def _reset_globals():
 
 
 def _reset_futures(loop):
+    """
+    Set global futures.
+
+    Arguments:
+        - `loop`: The loop the futures will be assigned to.
+    """
     global _tick_future, _key_future
     try:
         _tick_future.cancel()
@@ -44,6 +50,13 @@ def _reset_futures(loop):
         pass
     _tick_future = asyncio.Future(loop=loop)
     _key_future = asyncio.Future(loop=loop)
+
+
+def _reset_viewport():
+    """
+    Set global UI view port.
+    """
+    ui.reset()
 
 
 def _init(console=False):
@@ -85,8 +98,9 @@ def _start(console):
     _loop = asyncio.new_event_loop()
     asyncio.set_event_loop(_loop)
 
-    # Reset futures
+    # Reset futures and viewport
     _reset_futures(_loop)
+    _reset_viewport()
 
     # Print some debug information
     logger.info('Started')
@@ -128,6 +142,7 @@ def _tick():
             global _tick_future
             _tick_future.set_result(None)
             _tick_future = asyncio.Future(loop=_loop)
+            ui.draw()
         _loop.call_soon_threadsafe(__tick)
 
 

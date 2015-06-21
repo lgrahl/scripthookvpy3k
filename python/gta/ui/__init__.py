@@ -3,6 +3,7 @@ UI components that can be used in GTA V.
 """
 import enum
 import collections
+import weakref
 
 __all__ = ('Point', 'Color', 'Direction', 'Align',
            'Item', 'SelectableItem', 'ActivatableItem', 'AlterableItem', 'Container',
@@ -493,14 +494,24 @@ class Container(Item):
         raise NotImplementedError()
 
 
+def _new_viewport():
+    return weakref.WeakSet()
+
+_viewport = _new_viewport()
+
+
 def add(item):
     """
     Add an UI item to the view port.
 
+    .. note:: UI elements from scripts will be automatically removed
+              when the script returns. But there will be a small delay
+              until the garbage collector removes the elements.
+
     Arguments:
         - `item`: The :class:`Item` instance to be added.
     """
-    raise NotImplementedError()
+    _viewport.add(item)
 
 
 def remove(item):
@@ -510,4 +521,23 @@ def remove(item):
     Arguments:
         - `item`: The :class:`Item` instance to be removed.
     """
-    raise NotImplementedError()
+    _viewport.remove(item)
+
+
+def reset():
+    """
+    Reset the viewport instance.
+
+    .. warning:: Do not call this function from a script!
+    """
+    global _viewport
+    _viewport = _new_viewport()
+
+def draw():
+    """
+    Draw all UI items on the viewport.
+
+    .. warning:: Do not call this function from a script!
+    """
+    for item in _viewport:
+        item.draw()
