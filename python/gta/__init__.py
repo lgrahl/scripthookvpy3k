@@ -19,7 +19,7 @@ from gta.enums import *
 
 __author__ = 'Lennart Grahl <lennart.grahl@gmail.com>'
 __status__ = 'Development'
-__version__ = '0.9.16'
+__version__ = '0.10.16'
 __all__ = exceptions.__all__ + enums.__all__
 
 
