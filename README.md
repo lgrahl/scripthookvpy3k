@@ -43,5 +43,5 @@ If you want to build the ASI plugin yourself, you'll need:
    extracted into [/sdk](/sdk) after downloading
 3. [SWIG](http://sourceforge.net/projects/swig/files/swigwin/) Version >= 3.0.5 which has
    to be extracted into [/swig](/swig) after downloading
-4. **Python 3 for AMD64/EM64T/x64**. Using the x86 version will not work!
+4. **Python 3.5.0 for AMD64/EM64T/x64**. Using the x86 version will not work!
 5. Open the project file and build the solution in *Release* configuration
