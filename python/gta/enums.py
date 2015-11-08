@@ -145,7 +145,7 @@ class Key(enum.Enum):
 
 
 @enum.unique
-class Font(enum.Enum):
+class Font(enum.IntEnum):
     chalet_london = 0
     house_script = 1
     monospace = 2

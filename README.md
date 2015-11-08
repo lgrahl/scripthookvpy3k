@@ -16,7 +16,7 @@ page.
 
 ## Installation
 1. Install the [Script Hook V](http://www.dev-c.com/gtav/scripthookv/)
-2. Install [Python 3.4.3 for Windows x64](https://www.python.org/ftp/python/3.4.3/python-3.4.3.amd64.msi)
+2. Install [Python 3.5.0 for Windows x64](https://www.python.org/ftp/python/3.5.0/python-3.5.0-amd64.exe)
 3. Copy the contents of the downloaded archive into your GTA V game folder
 
 ## Writing Scripts
